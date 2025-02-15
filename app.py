@@ -217,7 +217,8 @@ def get_game_by_id(game_id):
                 "images": game.get("images", []),
                 "green_man_nome": game.get("green_man_nome"),
                 "popularity": new_popularity if new_popularity is not None else game.get("popularity", 0),
-                "links": game.get("links", [])  # Usa os links diretamente do JSON
+                "links": sorted(game.get("links", []), key=lambda x: x["price"] if x["price"] is not None else float('inf'))
+  # Usa os links diretamente do JSON
             }
             return game_info
     return None
