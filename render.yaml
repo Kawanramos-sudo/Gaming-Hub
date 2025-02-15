@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: gaming-hub
+    runtime: python
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: PORT
+        value: 10000
