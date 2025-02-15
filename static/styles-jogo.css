@@ -1,0 +1,381 @@
+header {
+    background-color: #282846;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+form {
+    display: flex; /* Alinha input e botão lado a lado */
+    gap: 10px; /* Adiciona espaço entre os elementos */
+}
+
+.search-button {
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white; /* Texto branco */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px; /* Bordas arredondadas */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background-color: #2f0f40; /* Cor de fundo ao passar o mouse */
+}
+
+
+header a {
+    text-decoration: none;
+    color: white;
+}
+
+header .home-button {
+    text-decoration: none;
+    color: white;
+    padding: 8px 16px;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    background-color: #282846;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    white-space: nowrap; /* Impede a quebra de linha */
+}
+
+
+header .home-button:hover {
+    background-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #1e1e2f;
+    color: white;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+header input {
+    padding: 5px 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Bordas arredondadas */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #1e1e2f;
+    color: white;
+}
+
+header input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Container principal */
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+    margin: 30px auto;
+    background: #0a011d;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Título do jogo */
+.game-details h1 {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.game-image {
+    width: 30%;
+    margin-left: 4px;
+}
+
+/* Imagem do jogo */
+.game-image img {
+    border-radius: 6px;
+    border: 2px solid white;  /* Borda de 4px de espessura e cor branca */
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 0 auto;
+}
+
+.game-content {
+    display: flex; /* Alinha game-image e game-details lado a lado */
+    width: 100%; /* Garante que ocupe toda a largura disponível */
+    max-width: 1200px; /* Limita a largura máxima do contêiner */
+    margin-bottom: 20px; /* Espaçamento abaixo do contêiner de jogo */
+}
+
+/* Detalhes do jogo */
+.game-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px; /* Espaçamento entre a imagem e os detalhes */
+    width: 66%;
+    gap: 15px;
+}
+
+.game-details h2 {
+    font-size: 1.2rem;
+    line-height: 1.2; /* Aumentando espaçamento entre as linhas */
+}
+
+
+
+.game-details p {
+    font-size: 1.2rem;
+}
+
+/* Carrossel de imagens */
+.carousel-container {
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    height: 420px;
+}
+
+
+.carousel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Posiciona todas as imagens uma sobre a outra */
+.carousel img {
+    width: 80%;
+    height: 90%;
+    border-radius: 6px;
+    border: 2px solid white;  /* Borda de 4px de espessura e cor branca */
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+/* Apenas a imagem ativa será visível */
+.carousel img.active {
+    opacity: 1;
+}
+
+/* Botões do carrossel */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 1%;
+    transition: background 0.3s;
+    z-index: 10; /* Mantém os botões acima das imagens */
+}
+
+.carousel-button.left {
+    left: 40px;
+}
+
+.carousel-button.right {
+    right: 40px;
+}
+
+.carousel-button:hover {
+    background: rgba(255, 255, 255, 0.7);
+    color: black;
+}
+
+/* Estilo dos indicadores */
+.carousel-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+/* Estilo dos indicadores (bolinhas) */
+.carousel-indicators span {
+    width: 12px;
+    height: 12px;
+    background: gray;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/* Indicador ativo */
+.carousel-indicators span.active {
+    background: #ffffff;
+}
+
+
+
+
+/* Estilo para a caixa de links das lojas */
+.container-lojas {
+    position: relative;  /* Troca para relative para ajustar o posicionamento de outros elementos */
+    width: 100%;  /* Largura ajustada para caber no centro da tela */
+    max-width: 100%; /* Limita a largura máxima */
+    min-height: 1%; /* Altura mínima mais realista */
+    max-height: 100%; /* Altura máxima ajustada */
+    padding: 16px;
+    box-sizing: border-box;
+    background-color: #0d0524;
+    border-radius: 12px;
+    outline: 3px solid #ffffff;
+    overflow: hidden; /* Evita que os elementos apareçam abruptamente */
+    cursor: grab; /* Indica que o elemento pode ser movido */
+    resize: both; /* Permite redimensionamento */
+    margin: 20px auto; /* Centraliza horizontalmente */
+    transition: height 0.4s ease-in-out; /* Animação suave para a altura */
+}
+
+/* Estilo das lojas */
+.links-lojas.oculto {
+    opacity: 0;
+    display: none;
+    max-height: 0px;
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.links-lojas {
+    display: flex;
+    z-index: 1; /* Garante que o link visível esteja acima dos ocultos */
+    align-items: center;
+    justify-content: flex-start; /* Alinha à esquerda */
+    padding: 10px; /* Espaçamento interno */
+    margin-bottom: 10px; /* Espaço entre as lojas */
+    height: 80px; /* Altura fixa */
+    background-color: #ffffff; /* Cor de fundo para todas ficarem iguais */
+    border-radius: 8px; /* Bordas arredondadas */
+    opacity: 1; /* Começa visível */
+    max-height: 100px; /* Começa com a altura zero */
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+/* Quando mostrar */
+.links-lojas.mostrar {
+    display: flex;
+    opacity: 1;
+    height: 80px; /* Ajuste o valor conforme necessário */
+}
+
+/* Estilo do item de link */
+.link-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: rgb(212, 0, 0);
+}
+
+/* Estilo do ícone de loja */
+.icon {
+    height: 30px; /* Altura fixa */
+    width: auto; /* Largura automática para manter a proporção */
+    object-fit: contain; /* Ajuste sem distorcer */
+    object-position: center; /* Centraliza a imagem */
+    margin-right: 10px; /* Espaço entre ícones */
+    display: block; /* Garante que a imagem ocupe o espaço disponível */
+    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner */
+}
+
+/* Estilo do nome da loja e preço */
+.loja-nome, .preco {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px; /* Tamanho do texto */
+    font-family: 'Roboto', sans-serif; /* Define a fonte Roboto */
+}
+
+.loja-nome {
+    flex-grow: 1; /* Faz o nome da loja ocupar o espaço restante */
+}
+
+.preco {
+    margin-left: auto; /* Alinha o preço à direita */
+    color: rgb(0, 0, 0); /* Texto branco */
+}
+
+/* Estilo do botão "Mostrar tudo" */
+.mostrar-tudo {
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white; /* Texto branco */
+    border: none; /* Sem borda */
+    padding: 10px 20px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor de mão ao passar o mouse */
+    margin-top: 15px; /* Margem superior */
+    display: flex; /* Usar flexbox para alinhar o texto e o triângulo */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: center; /* Alinha horizontalmente ao centro */
+    gap: 5px; /* Espaço entre o texto e o triângulo */
+    width: 200px;
+    margin: 15px auto; /* Centraliza o botão horizontalmente */
+}
+
+
+.mostrar-tudo.expanded .triangulo {
+    transform: rotate(180deg); /* Rotaciona o triângulo de cabeça para baixo */
+}
+
+.triangulo {
+    margin-left: 5px; /* Espaçamento à esquerda do triângulo */
+    transition: transform 0.3s; /* Transição suave para a rotação */
+}
+
+.game-container h1 {
+    text-align: center; /* Centraliza o texto */
+    margin-bottom: 10px;
+}
+

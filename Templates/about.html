@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Hub BR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+
+<header>
+    <h2><a href="/" class="home-button">Gaming Hub</a></h2>
+
+    <div class="botoes-centrais">
+     <button id="botao-home-novo" onclick="window.location.href='/'">
+        <h2>Home</h2>
+     </button>
+    
+
+
+     <div class="dropdown">
+        <button class="dropdown-btn">
+            Gêneros <span class="triangle">&#9662;</span>
+        </button>
+        <ul class="dropdown-content">
+            {% for genre in genres %}
+                <li>
+                    <a href="{{ url_for('genre', genre_name=genre) }}">{{ genre }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+     </div>
+
+     <button id="how-work" onclick="window.location.href='/how-work'">
+        <h2>Como funciona?</h2>
+     </button>
+    
+    
+      <button id="about" onclick="window.location.href=href='/about'"><h2>Sobre</h2></button>
+
+    </div>
+
+
+    <form action="/search" method="get">
+        <input type="text" name="query" placeholder="Busque um jogo..." required>
+      <button type="submit" class="search-button">Buscar</button>
+     </form>
+
+
+    
+
+
+
+</header>
+
+
+<body>
+    
+
+     <div class="about-text">
+
+     <h8>Sobre o Gaminghub 🚀🎮
+        Bem-vindo ao Gaminghub, o seu destino definitivo para encontrar os melhores preços de jogos digitais! Aqui, nossa missão é simples: ajudar você a economizar enquanto aproveita os melhores jogos do momento.
+        
+        Sabemos que o universo dos games pode ser caro, e nem sempre é fácil encontrar aquele desconto incrível ou uma oferta que realmente valha a pena. É por isso que criamos o Gaminghub: para conectar você às melhores promoções de jogos disponíveis na internet.
+        
+        O que fazemos?
+        🔹 Comparamos preços em diversas lojas confiáveis, garantindo que você sempre tenha a melhor opção na palma da mão.
+        🔹 Facilitamos sua busca com filtros por gênero, nome do jogo e promoções especiais.
+        🔹 Mostramos o menor preço disponível, para que você aproveite o game que deseja sem gastar além do necessário.
+        🔹 Oferecemos uma interface simples e intuitiva, para que sua experiência de navegação seja rápida, fácil e eficiente.
+        
+        Por que usar o Gaminghub?
+        🎯 Economia real – Encontre preços reduzidos e promoções relâmpago sem precisar abrir mil abas no navegador.
+        🛒 Lojas confiáveis – Listamos apenas vendedores verificados, garantindo sua segurança na compra.
+        🔥 Sempre atualizado – Nosso sistema busca os preços mais recentes, para que você não perca nenhuma oferta.
+        🎮 Variedade incrível – Dos grandes lançamentos aos clássicos, temos um catálogo que atende todos os gostos!
+        
+        O mundo dos games ao seu alcance
+        O Gaminghub não é só um comparador de preços – ele é um aliado para todos os gamers. Seja você um caçador de ofertas, um fã de RPGs épicos, um apaixonado por FPS ou alguém que só quer encontrar um bom jogo indie para o fim de semana, estamos aqui para ajudar!
+        
+        Nosso compromisso é garantir que você jogue mais, pagando menos. Então, aproveite nossa plataforma, explore nossas categorias e descubra sua próxima grande aventura pelo melhor preço!
+        
+        💙 Boas compras e bom jogo! 🚀🎮</h8>
+
+
+
+     </div>
+
+
+</body>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section about">
+            <h3>Sobre nós</h3>
+            <p>O Gaminghub oferece as melhores ofertas em jogos digitais! Encontre chaves de jogos para Steam, com os preços mais baixos e promoções atualizadas. Nossa missão é ajudar você a economizar enquanto joga os melhores títulos.</p>
+        </div>
+        <div class="footer-section links">
+            <h3>Links úteis</h3>
+            <ul>
+                <li><a href="#">Home</a></li>   
+
+                <li><a href='{{ url_for('about') }}'>sobre</a></li>
+                <li><a href='{{ url_for('how_work') }}'>Como funciona?</a></li>
+            </ul>
+        </div>
+        <div class="footer-section social">
+            <h3>Redes sociais</h3>
+            <ul>
+              <!--  <li><a href="#">Facebook</a></li>   Em Breve -->
+              <a href="https://t.me/gaminghubi">Telegram</a></li>
+
+              <!--  <li><a href="#">YouTube</a></li>  Em Breve -->
+                <li><a href="https://www.tiktok.com/@mundofeito_0?_t=ZM-8tmTwqs394X&_r=1">Tik Tok</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 GamingHub | Todos os direitos reservados | Feito por brasileiros 🇧🇷</p>
+    </div>
+</footer>
+
+
+</html>

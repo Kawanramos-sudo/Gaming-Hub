@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos os Links - {{ jogo.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+    <h1><a href="/" class="home-button">Gaming Hub</a></h1>
+    <form action="/search" method="get" style="margin-top: 10px; display: flex; align-items: center;">
+        <input type="text" name="query" placeholder="Busque um jogo..." required>
+        <button type="submit" class="search-button">Buscar</button>
+    </form>
+</header>
+
+<main>
+    <h2>Todos os Links - {{ jogo.name }}</h2>
+    <div class="lojas-lista">
+        {% for link in jogo.links %}
+        <div class="loja-item">
+            <img src="{{ store_icons.get(link.store, 'https://via.placeholder.com/40') }}" alt="{{ link.store }} Logo">
+            <span class="preco">{{ link.price }}</span>
+            <a href="{{ link.url }}" target="_blank"></a> <!-- Link vazio, sem texto -->
+        </div>
+        {% endfor %}
+    </div>
+</main>
+
+
+
+</body>
+</html>
