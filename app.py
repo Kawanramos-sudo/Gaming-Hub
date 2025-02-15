@@ -7,11 +7,114 @@ from markupsafe import escape
 from flask_talisman import Talisman
 import re
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.getcwd())
 app.secret_key = 'sua_chave_secreta_aqui'  # Necessário para usar sessões
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Caminho para o arquivo games.json
 DATA_PATH = os.path.join(os.path.dirname(__file__), 'data', 'games.json')
+
+
+
+
+
+
+
+
+import os
+import json
+
+def get_related_games(game_id):
+    try:
+        file_path = os.path.join("data", "games.json")
+        if not os.path.exists(file_path):
+            print("Erro: O arquivo games.json não foi encontrado.")
+            return []
+
+        with open(file_path, "r", encoding="utf-8") as file:
+            games = json.load(file)
+
+        # Debug para verificar a estrutura de `games`
+        print("Conteúdo de games.json:", type(games))
+
+        if isinstance(games, dict):  # Se o JSON tem um objeto raiz, e não uma lista
+            games = games.get("games", [])  # Ajustar se os jogos estiverem dentro de uma chave "games"
+
+        if not isinstance(games, list):
+            print("Erro: O conteúdo de games.json não é uma lista válida.")
+            return []
+
+        # Encontrar o jogo atual
+        current_game = next((game for game in games if game["id"] == game_id), None)
+        if not current_game:
+            print(f"Nenhum jogo encontrado com o ID {game_id}")
+            return []
+
+        game_genres = current_game.get("genres", "")
+        genre_list = [g.strip().lower() for g in game_genres.split(',') if g.strip()]
+
+        print(f"Jogo atual ({current_game['name']}): {genre_list}")
+
+        related_games = []
+
+        for game in games:
+            if game["id"] == game_id:
+                continue  # Não incluir o próprio jogo na lista de relacionados
+            
+            game_genres = game.get("genres", "")
+            print(f"Verificando {game['name']} - Gêneros: {game_genres}")
+
+            if any(genre in game_genres.lower() for genre in genre_list):
+                game_info = {
+                    "id": game["id"],
+                    "name": game.get("name", "Nome não disponível"),
+                    "description": game.get("description", "Descrição não disponível"),
+                    "genres": game.get("genres", ""),
+                    "release_date": game.get("release_date", "Data não disponível"),
+                    "image": game.get("image", ""),
+                    "images": game.get("images", []),
+                    "green_man_nome": game.get("green_man_nome", None),
+                    "popularity": game.get("popularity", 0),
+                    "links": game.get("links", []),
+                    "lowest_price": None
+                }
+
+                # Calcular o menor preço
+                valid_prices = [link["price"] for link in game_info["links"] if isinstance(link, dict) and link.get("price") and link["price"] > 0]
+                game_info["lowest_price"] = min(valid_prices) if valid_prices else None
+
+                related_games.append(game_info)
+
+        related_games.sort(key=lambda x: x["popularity"], reverse=True)
+        print(f"Jogos relacionados retornados: {len(related_games)}")
+        return related_games
+
+    except Exception as e:
+        print(f"Erro ao buscar jogos relacionados: {e}")
+        return []
+
+
+
+
+
+
+
+
+
+
 
 def load_games_data():
     """Carrega os dados dos jogos do arquivo JSON."""
@@ -241,10 +344,13 @@ def about():
 
 @app.template_filter('format_currency')
 def format_currency(value):
+    if value is None:
+        return "Fora de Estoque"
     try:
         return f"R$ {float(value):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
     except ValueError:
-        return value
+        return "Preço inválido"
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000, debug=False)
