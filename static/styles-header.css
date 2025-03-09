@@ -1,0 +1,200 @@
+header a {
+    text-decoration: none;
+    color: white;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.search-button {
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white; /* Texto branco */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px; /* Bordas arredondadas */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background-color: #45a049; /* Cor de fundo ao passar o mouse */
+}
+
+/* Botão da página inicial */
+header .home-button {
+    text-decoration: none;
+    color: white;
+    padding: 8px 16px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background-color: #282846;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    white-space: nowrap; /* Impede a quebra de linha */
+}
+
+header .home-button:hover {
+    background-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+header {
+    display: flex;
+    background-color: #282846;
+    padding: 15px 30px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h2 {
+    flex: 1; /* Ocupa espaço na esquerda */
+    margin: 0;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+header input {
+    padding: 5px 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Bordas arredondadas */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #1e1e2f;
+    color: white;
+    max-width: 58%;
+}
+
+
+#botao-home-novo {
+    background: var(--card-bg);
+    color: var(--text);
+    font-weight: 800;
+    padding: 1rem 1rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+#botao-home-novo:hover {
+    background: rgba(0, 0, 0, 0.727);
+}
+
+#botao-home-novo h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+
+  }
+
+.botoes-centrais {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex: 2; /* Faz essa seção ocupar o centro */
+}
+
+
+@media (max-width: 992px) { 
+    header input {
+        max-width: 20%; /* Permite que ocupe mais espaço */
+    }
+}
+
+
+header input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+
+    header input {
+        padding: 5px 10px;
+        min-width: 10%;
+        max-width: 100%;
+        font-size: 1.0rem;
+        border: 1px solid #ccc;
+        border-radius: 8px; /* Bordas arredondadas */
+        outline: none;
+        margin-bottom: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        background-color: #1e1e2f;
+        color: white;
+        max-height: 80%;
+        margin-top: 2%;
+    }
+    input[name="query"]::placeholder {
+        font-size: 14px; /* Ajuste o tamanho do placeholder */
+        color: #888; /* Opcional: muda a cor do texto do placeholder */
+    }
+    .botoes-centrais button,
+    .botoes-centrais .dropdown-btn {
+        flex: 1 1 auto; /* Faz os botões se ajustarem ao espaço disponível */
+        min-width: 1px; /* Evita que fiquem muito pequenos */
+        text-align: center;
+        margin-top: 45px;
+        padding: 0rem 0rem;
+    }
+    
+    input[type="text"] {
+        font-size: 90%; /* Ajuste para melhorar a legibilidade em celulares */
+        padding: 12px 15px; /* Aumenta o padding para facilitar o uso em telas pequenas */
+        width: calc(75% - 25px); /* Ajusta o campo para ocupar toda a largura disponível */
+        margin-right: 0; /* Remove o espaçamento à direita em telas pequenas */
+        margin-left: 10px;
+        margin-top: 20px;
+    }
+
+    header {
+        margin-bottom: 30px;
+        flex-direction: column; /* Empilha os elementos */
+        background-color: #05050f;
+        align-items: center; /* Centraliza tudo */
+        padding: 10px 20px; /* Ajusta o espaçamento */
+        border-bottom: 2px solid white;  /* Borda branca de 5px */
+    }
+
+    header .home-button {
+        text-decoration: none;
+        color: white;
+        padding: 8px 16px;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        background-color: #282846;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        white-space: nowrap; /* Impede a quebra de linha */
+        position: relative;
+        top: 15px;
+    }
+
+    .search-button {
+        background-color: #4CAF50; /* Cor de fundo verde */
+        color: white; /* Texto branco */
+        border: none;
+        padding: 10px 20px;
+        font-size: 12px;
+        border-radius: 25px; /* Bordas arredondadas */
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        margin-top: 15px;
+    }
+
+}

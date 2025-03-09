@@ -1,0 +1,1755 @@
+/* Estilo da grid de jogos */
+.search-results .games-grid {
+    display: flex;  /* Usando flexbox para exibir os itens lado a lado */
+    flex-wrap: wrap;  /* Para quebrar a linha quando o espaço acabar */
+    gap: 20px;  /* Espaço entre os itens */
+    justify-content: flex-start;  /* Alinha os itens à esquerda */
+    padding-left: 20px;  /* Adiciona um pequeno espaçamento à esquerda */
+}
+form {
+    display: flex;
+    gap: 10px;
+    width: 27%;
+    justify-content: flex-end; /* Mantém o input e botão à direita */
+    flex: 1;
+}
+
+/* Estilo do card de jogo */
+.search-results .game-card {
+    background-color: #282846;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 200px; /* Ajuste o tamanho do botão */
+    height: 350px; /* Ajuste a altura do botão */
+    margin-left: 0; /* Alinha à esquerda */
+    float: left; /* Garante que os itens fiquem à esquerda */
+}
+
+
+/* Efeito ao passar o mouse sobre o card */
+.search-results .game-card:hover {
+    transform: scale(1.05);  /* Aumenta um pouco o tamanho do card */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Estilo da imagem dentro do card */
+.search-results .game-card img {
+    width: 100%;  /* Imagem ocupa 100% da largura do card */
+    height: 85%;  /* Altura ajustada automaticamente */
+    border-radius: 10px;
+    object-fit: cover;  /* Ajusta a imagem para cobrir a área sem distorcer */
+}
+
+/* Título do jogo */
+.search-results .game-card h3 {
+    color: white;
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+
+.search-results ul li img {
+    width: 150px;  /* Ajuste a largura da imagem */
+    height: 150px; /* Ajuste a altura da imagem */
+    object-fit: cover; /* Mantém a imagem proporcional e cortada, se necessário */
+    border-radius: 15px; /* Bordas arredondadas */
+    border: 2px solid white; /* Adiciona contorno branco */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+/* Ajuste para que o carrossel fique abaixo da descrição do jogo */
+.games-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column; /* Mudando para coluna */
+    align-items: flex-start;
+    justify-content: space-between; /* Espaça os itens */
+    gap: 20px;
+    padding: 10px; /* Adiciona espaço interno */
+    margin: 10px auto; /* Reduz a margem superior */
+}
+
+
+
+.carousel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 15px;
+}
+
+.carousel img {
+    width: 540px;
+    height: 290px;
+    border-radius: 6px;
+    border: 2px solid white;  /* Borda de 4px de espessura e cor branca */
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 1%;
+    transition: background 0.3s;
+    z-index: 10; /* Mantém os botões acima das imagens */
+}
+
+.carousel-button.left {
+    display: none;
+    left: 4px;
+}
+
+.carousel-button.right {
+    display: none;
+
+    right: 4px;
+}
+
+
+.carousel-indicators span {
+
+    width: 12px;
+    height: 12px;
+    background: gray;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+
+    .carousel-indicators span:hover {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .carousel-indicators span.active {
+        background: #ffffff;
+    }
+
+
+
+
+.carousel-container img.active {
+    opacity: 1;
+}
+
+
+
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    z-index: 10; /* Garante que as setas fiquem sobre as imagens */
+}
+
+.carousel-nav .prev, .carousel-nav .next {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    font-size: 20px;
+}
+
+.detais-carousel{
+    gap: 10px;
+    width: 50%;
+    height: 550px;
+    margin-right: 98px;
+}
+
+.game-image {
+    margin-top: 25px;
+    width: 595px;
+    height: 570px;
+    display: flex; /* Ativa o flexbox */
+    justify-content: center; /* Alinha à direita */
+}
+
+
+
+.game-content {
+    display: flex; /* Alinha game-image e game-details lado a lado */
+    width: 100%; /* Garante que ocupe toda a largura disponível */
+    margin-top: 20px;
+}
+
+/* Estilo do contêiner do jogo */
+/* Estilo para o contêiner pai */
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 15px auto;
+    background: #0a011d;
+    color: #ffffff;
+    padding: 0px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+.game-details h2 {
+    font-size: 107%;
+    line-height: 1.1; /* Aumentando espaçamento entre as linhas */
+}
+
+/* Estilo para .game-details */
+.game-details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0px;
+    margin-top: 25px;
+}
+
+
+/* Estilo da imagem do jogo */
+
+
+.text-center-3{
+    margin-top: 50px;
+  
+    margin-left: 7.6%;
+  
+      }
+
+.game-image img {
+    border-radius: 6px;
+    border: 2px solid white;  /* Borda de 4px de espessura e cor branca */
+    object-fit: cover; /* Corta um pouco, mas preenche o espaço */
+    width: 380px;
+    height: 550px;
+    border-radius: 8px;
+    margin-left: 30px;
+}
+
+.game-details h1 {
+    font-size: 150%;
+    margin-top: 0;
+    margin-bottom: 0px;
+}
+
+
+/* Título dos melhores valores */
+.titulo-container {
+    position: relative; /* Permite o posicionamento absoluto em relação ao .game-details */
+    margin-top: 60px; /* Ajuste a distância do topo conforme necessário */
+    text-align: center; /* Centraliza o título */
+}
+
+/* Estilo do carrossel */
+.carousel-container {
+    width: 550px;
+    margin-top: 0px;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    height: 320px;
+}
+
+
+.carousel img.active {
+    opacity: 1; /* Apenas a imagem ativa será exibida */
+}
+
+/* Estilo dos indicadores */
+.carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+
+
+
+
+
+.game-details p {
+    font-size: 1.2rem;
+    line-height: 0rem; /* Aumentando espaçamento entre as linhas */
+}
+
+
+.game-details strong {
+    color: #9aff9a;
+}
+
+
+
+
+
+
+
+/* Barra de pesquisa e botão */
+.search-button {
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white; /* Texto branco */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px; /* Bordas arredondadas */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background-color: #45a049; /* Cor de fundo ao passar o mouse */
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+
+header a {
+    text-decoration: none;
+    color: white;
+}
+
+/* Estilo da página do jogo */
+.container {
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+}
+
+.container img {
+    width: 20%;
+    border-radius: 10px;
+    margin-bottom: 0px;
+}
+
+.container h1 {
+    margin-bottom: 0px;
+}
+
+.container p {
+    font-size: 1.2rem;
+    margin-bottom: 0px;
+}
+
+
+
+
+
+
+/* Botão da página inicial */
+header .home-button {
+    text-decoration: none;
+    color: white;
+    padding: 8px 16px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background-color: #282846;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    white-space: nowrap; /* Impede a quebra de linha */
+}
+
+header .home-button:hover {
+    background-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+
+
+    background-color: #1e1e2f;
+    color: white;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    background-color: #282846;
+    padding: 15px 30px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h2 {
+    flex: 1; /* Ocupa espaço na esquerda */
+    margin: 0;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+header input {
+    padding: 5px 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Bordas arredondadas */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #1e1e2f;
+    color: white;
+    max-width: 58%;
+}
+
+@media (max-width: 992px) { 
+    header input {
+        max-width: 20%; /* Permite que ocupe mais espaço */
+    }
+}
+
+header input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+.games {
+    flex: 2;
+    max-width: 85%; /* Ajuste conforme necessário */
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, max-content));
+    gap: 30px;
+    padding: 10px;
+    justify-content: center; /* Centraliza os itens dentro do grid */
+}
+
+
+.game {
+    background-color: #282846;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 200px; /* Ajuste o tamanho do botão */
+    height: 360px; /* Ajuste a altura do botão */
+    border: 2px solid #0000007a; /* Borda branca */
+    margin: 0 auto; /* Alinha o botão ao centro */
+}
+
+.game-2 {
+    background-color: #282846;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: auto;
+    width: 185px;
+        height: 360px; /* Ajuste a altura do botão */
+    border: 2px solid #0000007a; /* Borda branca */
+    margin: 0 auto; /* Alinha o botão ao centro */
+}
+
+.game:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+
+.game-2:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.game img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover; /* Para garantir que a imagem fique bem ajustada */
+}
+
+.game-2 img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.game h3 {
+    font-size: 1.1rem;
+    margin: 10px 0;
+    color: white;
+    font-weight: bold;
+}
+
+.game-2 h3 {
+    font-size: 1.1rem;
+    margin: 10px 0;
+    color: white;
+    font-weight: bold;
+}
+
+.game p {
+    margin: 5px 0;
+    color: white;
+}
+
+.game p strong {
+    color: #70ff70;
+}
+
+
+.game-2 p {
+    margin: 5px 0;
+    color: white;
+}
+
+.game-2 p strong {
+    color: #70ff70;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+/* Estilo para a caixa de links das lojas */
+.container-lojas {
+    position: relative;  /* Troca para relative para ajustar o posicionamento de outros elementos */
+    width: 1000px;  /* Largura ajustada para caber no centro da tela */
+    min-height: 1%; /* Altura mínima mais realista */
+    max-height: 100%; /* Altura máxima ajustada */
+    padding: 16px;
+    box-sizing: border-box;
+    background-color: #0d0524;
+    border-radius: 12px;
+    outline: 3px solid #ffffff;
+    overflow: hidden; /* Evita que os elementos apareçam abruptamente */
+    cursor: grab; /* Indica que o elemento pode ser movido */
+    resize: both; /* Permite redimensionamento */
+    margin: 35px auto; /* Centraliza horizontalmente */
+    transition: height 0.4s ease-in-out; /* Animação suave para a altura */
+    align-items: center; /* Alinha verticalmente no centro */
+    justify-content: space-between; /* Distribui os itens horizontalmente */
+}
+
+#links {
+
+
+ justify-items: center;
+
+}
+
+
+#links .links-lojas:first-of-type {
+    background-color: #ffeb3b; /* Amarelo vibrante para chamar a atenção */
+    font-weight: bold; /* Deixar o texto em negrito */
+    border: 2px solid #ff9800; /* Borda laranja para destacar o link */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar um efeito de elevação */
+    transition: all 0.3s ease-in-out; /* Suavizar a transição para efeitos */
+}
+
+#links .links-lojas:first-of-type:hover {
+    background-color: #ff9800; /* Mudar a cor quando o usuário passar o mouse */
+    color: white; /* Texto branco ao passar o mouse */
+    transform: scale(1.05); /* Aumenta o tamanho do link ao passar o mouse */
+}
+
+#links .links-lojas:first-of-type:before {
+    content: "🔥"; /* Texto que diz que é o melhor preço */
+    font-size: 14px;
+    color: #d32f2f; /* Cor vermelha para criar urgência */
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+
+
+
+
+.links-lojas.oculto {
+    opacity: 0;
+    display: none;
+    max-height: 0px;
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+
+.links-lojas {
+    display: flex;
+    z-index: 1; /* Garante que o link visível esteja acima dos ocultos */
+    align-items: center;
+    justify-content: center;
+    padding: 10px; /* Espaçamento interno */
+    margin-bottom: 10px; /* Espaço entre as lojas */
+    height: 80px; /* Altura fixa */
+    background-color: #ffffff; /* Cor de fundo para todas ficarem iguais */
+    border-radius: 8px; /* Bordas arredondadas */
+    opacity: 1; /* Começa visível */
+    max-height: 100px; /* Começa com a altura zero */
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    width: 95%;
+}
+
+
+
+.links-lojas.mostrar {
+    display: flex;
+    opacity: 1;
+    height: 80px; /* Ajuste o valor conforme necessário */
+}
+
+/* Estilo do item de link */
+.link-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: rgb(212, 0, 0);
+}
+
+/* Estilo do ícone de loja */
+.icon {
+    height: 30px; /* Altura fixa */
+    width: auto; /* Largura automática para manter a proporção */
+    object-fit: contain; /* Ajuste sem distorcer */
+    object-position: center; /* Centraliza a imagem */
+    margin-right: 10px; /* Espaço entre ícones */
+    display: block; /* Garante que a imagem ocupe o espaço disponível */
+    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner */
+}
+
+.footer-section.about {
+    display: block; /* Visível por padrão */
+}
+
+/* Estilo do nome da loja e preço */
+.loja-nome, .preco {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px; /* Tamanho do texto */
+    font-family: 'Roboto', sans-serif; /* Define a fonte Roboto */
+}
+
+.loja-nome {
+    flex-grow: 1; /* Faz o nome da loja ocupar o espaço restante */
+}
+
+.preco {
+    margin-left: auto; /* Alinha o preço à direita */
+    color: rgb(0, 0, 0); /* Texto branco */
+}
+
+/* Estilo do botão "Mostrar tudo" */
+.mostrar-tudo {
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white; /* Texto branco */
+    border: none; /* Sem borda */
+    padding: 10px 20px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor de mão ao passar o mouse */
+    margin-top: 15px; /* Margem superior */
+    display: flex; /* Usar flexbox para alinhar o texto e o triângulo */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: center; /* Alinha horizontalmente ao centro */
+    gap: 5px; /* Espaço entre o texto e o triângulo */
+    width: 200px;
+    margin: 15px auto; /* Centraliza o botão horizontalmente */
+}
+
+
+.mostrar-tudo.expanded .triangulo {
+    transform: rotate(180deg); /* Rotaciona o triângulo de cabeça para baixo */
+}
+
+.triangulo {
+    margin-left: 5px; /* Espaçamento à esquerda do triângulo */
+    transition: transform 0.3s; /* Transição suave para a rotação */
+}
+
+.game-container h1 {
+    text-align: center; /* Centraliza o texto */
+    margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.botoes-centrais {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex: 2; /* Faz essa seção ocupar o centro */
+}
+
+
+
+
+
+
+
+
+
+  #how-work {
+    background: var(--card-bg);
+    color: var(--text);
+    font-weight: 800;
+    padding: 1rem 1rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+#how-work:hover {
+    background: rgba(0, 0, 0, 0.727);
+}
+#how-work h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+
+  }
+
+
+  video {
+    width: 35%;
+    height: auto;
+    display: block;
+    margin: auto;
+    border-radius: 15px;  /* Arredonda as bordas */
+    border: 2px solid white;  /* Borda branca de 5px */
+    margin-top: 40px;
+}
+
+
+
+
+#about {
+    background: var(--card-bg);
+    color: var(--text);
+    font-weight: 800;
+    padding: 1rem 1rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+#about:hover {
+    background: rgba(0, 0, 0, 0.727);
+}
+
+#about h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+
+
+  #botao-home-novo {
+    background: var(--card-bg);
+    color: var(--text);
+    font-weight: 800;
+    padding: 1rem 1rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+#botao-home-novo:hover {
+    background: rgba(0, 0, 0, 0.727);
+}
+
+#botao-home-novo h2 {
+    font-size: 1.2rem;
+    font-weight: 800;
+
+  }
+
+
+
+ /* Estilização do dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+}
+
+.dropdown-btn {
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: 800;
+    padding: 0.75rem 1rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.dropdown-btn:hover {
+    background: rgba(0, 0, 0, 0.727);
+}
+
+/* Triângulo ao lado do texto */
+.triangle {
+    font-size: 0.8rem;
+}
+
+/* Oculta a lista de gêneros por padrão */
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--card-bg);
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.864);
+    overflow: hidden;
+    z-index: 10;
+    padding: 0;
+
+    /* Torna invisível, mas mantém a estrutura para evitar sumiço rápido */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+/* Exibe a lista ao passar o mouse */
+.dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Estilo dos itens da lista */
+.dropdown-content li {
+    list-style: none;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--text);
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.6);
+    transition: background 0.2s ease;
+}
+
+.dropdown-content a:hover {
+    background: rgb(24, 159, 4);
+}
+
+body h1 {
+ text-align: center;
+ text-transform: uppercase;
+
+}
+
+.about-text {
+    background-color: #0d0524;
+    width: 1400px;
+    border-radius: 30px;
+    padding: 20px;
+    display: flex;
+    margin: 10px auto; /* Isso centraliza horizontalmente */
+    height: 580px ;
+}
+
+
+.about-text h8 {
+    width: 880px;
+    background-color:#0d0524;
+    font-size: 1Rem;
+    white-space: pre-line; /* Preserva as quebras de linha */
+
+}
+
+
+/*                                       populares                                         */
+
+
+.container-popular h2 {
+    pointer-events: none; /* Impede que o título seja clicável */
+    text-decoration: none;
+    color: white;
+}
+
+
+
+.d-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+
+.container-popular {
+    max-width: 85%;
+    height: 510px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.mySwiper {
+    width: 100%; /* Ocupa toda a largura do container */
+    height: 100%;
+    background-color: #0b021b;
+    border-radius: 15px;
+    border: 1px solid white; /* Adiciona uma borda branca */
+}
+
+.swiper {
+    width: 100%;
+    height: 89%;
+}
+
+.swiper-wrapper {
+
+    padding: 8px;
+}
+
+
+
+
+/* Ajusta a altura dos cards */
+.swiper-slide .card {
+    width: 100%;
+    max-width: 150px; /* Define um tamanho máximo para os cards */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Ajusta a imagem dentro do card */
+.swiper-slide .card img {
+    min-width: 100%;
+    height: 100%; /* Ajuste conforme necessário */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.swiper-slide .card-body {
+    padding: 10px;
+}
+
+
+
+/* Estiliza os botões de navegação */
+.swiper-button-next, .swiper-button-prev {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.089);
+   border-radius: 25%;
+padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#next-button{
+
+width: 50px;
+height: 50px;
+
+
+}
+
+#prev-button{
+
+    width: 50px;
+    height: 50px;
+      
+}
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+
+    background-color: rgba(0, 0, 0, 0.8); /* Escurece ao passar o mouse */
+}
+
+.swiper-pagination {
+    margin-bottom: 8px;
+    bottom: 10px;
+}
+
+/* Ajusta a posição dos botões de navegação */
+.swiper-button-next {
+
+    right: 10px;
+    color: rgb(255, 255, 255); /* Cor das setas */
+}
+.swiper-button-prev {
+    left: 10px;
+    color: rgb(255, 255, 255); /* Cor das setas */
+}
+
+/* Deixa a paginação estilizada */
+.mySwiper .swiper-pagination-bullet {
+    background: rgba(255, 255, 255, 0.938);
+}
+
+.mySwiper .swiper-pagination-bullet-active {
+    background: #51ff00; /* Cor da paginação ativa */
+    opacity: 1;
+}
+
+
+.card-title {
+    color: white;
+   width: 100%;
+}
+
+
+
+/* Ajusta o card do jogo */
+.swiper-slide .game {
+    margin-top: 4%;
+    width: 200px; /* Tamanho fixo para os cards */
+    max-width: 100%;
+    background: #000000;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    border: 1px solid white; /* Borda branca */
+
+}
+
+
+/* Ajusta o título do jogo */
+.swiper-slide .game .card-title {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+/* Ajusta o preço para ficar mais próximo do título */
+.swiper-slide .game p {
+    font-size: 15px;
+}
+.card-body.text-center {
+ margin: -12px;
+}
+
+
+
+
+
+.container-related {
+    max-width: 85%;
+    height: 500px;
+    padding: 20px;
+    margin: 0 auto 60px; /* 0 no topo, auto nas laterais (centraliza horizontalmente) e 40px na parte de baixo */
+}
+
+
+
+
+.relatedSwiper{
+width: 100%; /* Ocupa toda a largura do container */
+height: 88%;
+background-color: #0b021b;
+border-radius: 15px;
+border: 1px solid white; /* Adiciona uma borda branca */
+
+
+
+}
+
+.game-tumb   {
+    width: 100%;
+}
+
+
+.game-tumb img {
+    object-fit:fill; /* Para garantir que a imagem fique bem ajustada */
+
+max-height: 80%;
+    width: 100%;
+    border-radius: 5px;
+}
+
+
+
+
+/*-----------------------Roda pé-------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+.footer {
+    background-color: #0d0524; /* Cor de fundo escura para o rodapé */
+    color: #ffffff; /* Texto branco para contraste */
+    padding: 40px 0; /* Espaçamento interno para dar respiro ao rodapé */
+    font-family: 'Arial', sans-serif; /* Fonte simples e legível */
+    text-align: center;
+}
+
+.footer-content {
+    display: flex; /* Usando flexbox para dispor as seções */
+    justify-content: space-around; /* Distribui as seções de maneira uniforme */
+    margin-bottom: 30px; /* Espaçamento entre as seções e o rodapé inferior */
+}
+
+.footer-section {
+    width: 30%; /* Largura das seções */
+}
+
+.footer-section h3 {
+    margin-bottom: 10px; /* Espaço abaixo do título */
+    font-size: 18px; /* Tamanho do título */
+    color: #f7a400; /* Cor dourada para destacar */
+}
+
+.footer-section p {
+    font-size: 14px; /* Tamanho da descrição */
+    line-height: 1.5; /* Espaçamento entre as linhas */
+}
+
+.footer-section ul {
+    list-style: none; /* Remove os marcadores de lista */
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin: 5px 0; /* Espaçamento entre os links */
+}
+
+.footer-section a {
+    text-decoration: none; /* Remove o sublinhado dos links */
+    color: #ffffff; /* Cor dourada nos links */
+    transition: color 0.3s ease; /* Efeito suave na cor do link */
+}
+
+.footer-section a:hover {
+    color: #ffffff; /* Muda para branco ao passar o mouse */
+}
+
+.footer-bottom {
+    border-top: 1px solid #ffffff; /* Linha divisória entre as seções e o rodapé inferior */
+    padding-top: 20px; /* Espaçamento acima do texto */
+    font-size: 14px; /* Tamanho do texto inferior */
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Media Query para telas menores, como celulares */
+@media (max-width: 768px) {
+
+    header input {
+        padding: 5px 10px;
+        min-width: 10%;
+        max-width: 100%;
+        font-size: 1.0rem;
+        border: 1px solid #ccc;
+        border-radius: 8px; /* Bordas arredondadas */
+        outline: none;
+        margin-bottom: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        background-color: #1e1e2f;
+        color: white;
+        max-height: 80%;
+        margin-top: 2%;
+    }
+    input[name="query"]::placeholder {
+        font-size: 14px; /* Ajuste o tamanho do placeholder */
+        color: #888; /* Opcional: muda a cor do texto do placeholder */
+    }
+    
+    
+    form {
+        margin-top: 5px;
+        width: 100%; /* Ocupar toda a largura */
+        justify-content: center; /* Centraliza o campo de busca */
+        align-items: center;
+
+    }
+
+    .game-2 h3 {
+        font-size: 0.9rem;
+        margin: 10px 0;
+        color: white;
+        font-weight: bold;
+    }
+
+    .game-2 p {
+        font-size: 0.75rem;
+        margin: 5px 0;
+        color: white;
+    }
+    
+    .game-2 p strong {
+        color: #70ff70;
+    }
+    body {
+        
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Evita rolagem horizontal */
+    }
+
+    header .home-button {
+        text-decoration: none;
+        color: white;
+        padding: 8px 16px;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        background-color: #282846;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        white-space: nowrap; /* Impede a quebra de linha */
+        position: relative;
+        top: 15px;
+    }
+
+    input[type="text"] {
+        font-size: 90%; /* Ajuste para melhorar a legibilidade em celulares */
+        padding: 12px 15px; /* Aumenta o padding para facilitar o uso em telas pequenas */
+        width: calc(75% - 25px); /* Ajusta o campo para ocupar toda a largura disponível */
+        margin-right: 0; /* Remove o espaçamento à direita em telas pequenas */
+        margin-left: 10px;
+        margin-top: 20px;
+    }
+    .separa {
+
+    height: 25px;
+
+    }
+
+    .game-image img{
+
+        filter: saturate(1.2); /* Aumenta a saturação em 50% */
+
+    }
+.carousel img{
+
+
+    filter: saturate(1.2); /* Aumenta a saturação em 50% */
+
+}
+    .game-2 img {
+        width: 100%;
+        height: 205px;
+        object-fit:cover; /* Para garantir que a imagem fique bem ajustada */
+        filter: saturate(1.2); /* Aumenta a saturação em 50% */
+
+
+}
+
+.game img {
+    filter: saturate(1.2); /* Aumenta a saturação em 50% */
+}
+.games {
+    display: grid;
+    place-items: center; /* Alinha os itens no centro */
+
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(153px, 1fr));
+    gap: 10px 5px; /* Ajuste do espaçamento */
+    max-width: 85%;
+    width: 81%;
+    margin: 0px auto;
+    justify-content: center; /* Centraliza os itens dentro do grid */
+}
+
+
+
+.game-2 {
+    background-color: #282846;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-width: 82%;
+    max-width: 84%;
+    height: 290px; 
+    margin: 0 auto;
+}
+
+.game-2:hover {
+    transform: scale(1.01); /* Cresce apenas 2% */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+    .carousel img {
+        width: 80%;
+        max-height: 75%;
+        border-radius: 6px;
+        border: 2px solid white;  /* Borda de 4px de espessura e cor branca */
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out;
+    }
+
+
+
+    .detais-carousel{
+        display: flex; flex-direction: column;
+        gap: 10px;
+        width: 90%;
+        height: auto;
+        margin-right: 1px;
+        justify-content: center; /* Centraliza horizontalmente */
+        align-items: center; /* Centraliza verticalmente */
+    }
+
+
+    .search-button {
+        background-color: #4CAF50; /* Cor de fundo verde */
+        color: white; /* Texto branco */
+        border: none;
+        padding: 10px 20px;
+        font-size: 12px;
+        border-radius: 25px; /* Bordas arredondadas */
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        margin-top: 15px;
+    }
+
+    .game-details h1 {
+        font-size: 1.5rem;
+        margin-top: 0;
+        margin-bottom: 0px;
+    }
+
+    .dropdown-content {
+
+        width: 150%;
+
+    }
+
+    .game-tumb   {
+        width: 100%;
+    }
+    
+    
+    .game-tumb img {
+        object-fit:cover; /* Para garantir que a imagem fique bem ajustada */
+    
+    height: 300px;
+        width: 100%;
+        border-radius: 5px;
+    }
+
+
+    .carousel-indicators {
+        display: none;
+    }
+
+    .text-center-3{
+  margin-top: 50px;
+
+  margin-left: 31px;
+
+    }
+
+    .carousel-button {
+
+        font-size: 1.0rem;
+
+    }
+
+    .carousel-button.left {
+        left: 0px;
+    }
+    
+    .carousel-button.right {
+        right: 0px;
+    }
+
+    
+
+    .game-details h2 {
+        font-size: 1.2rem;
+        line-height: 1.1; /* Aumentando espaçamento entre as linhas */
+    }
+
+
+    #botao-home-novo{
+
+
+        padding: 0rem 0rem;
+
+    }
+
+    .carousel img {
+        width: 98%;
+        max-height: 83.6%;
+        border-radius: 6px;
+        border: 2px solid white;
+        position: absolute;
+        top: 20px;
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out;
+        background-color: #000000;
+        object-fit:contain; /* Faz a imagem preencher sem distorcer */
+        object-position: center; /* Mantém o corte centralizado */
+    }
+    
+
+
+    #about{
+
+        padding: 0rem 0rem;
+    }
+
+    .swiper-slide .game {
+ margin-top: 6%;
+    }
+ 
+ #about h2{
+    font-weight: 0;
+    font-size: 1rem;
+ }
+ #how-work {
+
+    padding: 0rem 0rem;
+ }
+
+
+  #how-work h2 {
+        font-size: 1rem;
+        white-space: nowrap;
+
+          }
+
+      #botao-home-novo h2 {
+        font-size: 1rem;
+    
+      }
+
+      .dropdown-btn {
+        font-size: 1rem;
+      }
+
+      .footer-section a {
+
+   font-size: 0.7rem;
+
+
+      }
+
+      .container-popular {
+
+        padding: 0px 20px; /* 20px para cima e baixo, 10px para esquerda e direita */
+    }
+
+
+      .botoes-centrais button,
+      .botoes-centrais .dropdown-btn {
+          flex: 1 1 auto; /* Faz os botões se ajustarem ao espaço disponível */
+          min-width: 1px; /* Evita que fiquem muito pequenos */
+          text-align: center;
+          margin-top: 45px;
+          padding: 0rem 0rem;
+      }
+
+
+    .mySwiper {
+        width: 100%; /* Ocupa toda a largura do container */
+        height: 400px;
+        background-color: #0b021b;
+        border-radius: 15px;
+        border: 1px solid white; /* Adiciona uma borda branca */
+    }
+
+
+    .swiper {
+        width: 100%;
+        height: 93%;
+    }
+
+
+    .game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 93%;
+        height: 100%; /* Garante que o container ocupe toda a altura da tela */
+    }
+
+    .game-image {
+        margin-top: 15px;
+        display: none;
+        max-width: 43%; /* Mantém um bom espaçamento nas laterais */
+        max-height: 100%;
+        margin-left: 15px;
+    }
+
+
+    .game-image img {
+        border-radius: 6px;
+        border: 2px solid white;  /* Borda de 4px de espessura e cor branca */
+        object-fit: cover; /* Corta um pouco, mas preenche o espaço */
+        width: 100%;
+        max-height: 100%;
+        border-radius: 8px;
+        margin: 0 auto;
+    }
+
+
+    .carousel-container {
+        position:static;
+                height: 300px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .game-content {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center; /* Centraliza horizontalmente */
+        align-items: center; /* Centraliza verticalmente */
+        width: 100%;
+        max-width: 1200px;
+        height: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .swiper-wrapper {
+
+        padding: 5px;
+    }
+
+
+
+
+    .container-lojas {
+        margin: 0;
+        z-index: 0; /* Garante que fique atrás */
+        position: relative;
+        width: 90%;
+        height: 65%;
+        max-width: 450px;
+        background-color: #0d0524;
+        padding: 16px;
+        border-radius: 12px;
+        outline: 2px solid #ffffff;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 50px;
+    }
+
+    .links-lojas {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+
+
+    header {
+        margin-bottom: 30px;
+        flex-direction: column; /* Empilha os elementos */
+        background-color: #05050f;
+        align-items: center; /* Centraliza tudo */
+        padding: 10px 20px; /* Ajusta o espaçamento */
+        border-bottom: 2px solid white;  /* Borda branca de 5px */
+    }
+
+
+
+
+    .about-text {
+        display: flex;
+        flex-direction: column;
+        background-color: #0d0524;
+        width: 85%;
+        border-radius: 30px;
+        padding: 20px;
+        display: flex;
+        margin: 10px auto; /* Isso centraliza horizontalmente */
+        height: auto ;
+    }
+    
+    
+    .about-text h8 {
+        width: 100%;
+        background-color:#0d0524;
+        font-size: 1Rem;
+        white-space: pre-line; /* Preserva as quebras de linha */
+    
+    }
+    video {
+        width: 95%;
+        height: auto;
+        display: block;
+        margin: auto;
+        border-radius: 15px;  /* Arredonda as bordas */
+        border: 2px solid white;  /* Borda branca de 5px */
+        margin-top: 40px;
+    }
+    
+
+    .game-details {
+        font-size: 1.0rem;
+        max-width: 590px;
+        text-align: left; /* Alinha o texto à esquerda */
+        margin-left: 10px; /* Espaçamento entre a imagem e os detalhes */
+        max-height: 100%;
+        margin-top: 15px;
+
+    }
+
+        .game-details p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+            line-height: 1.2;
+            width: 100%;
+        }
+
+        .footer {
+            margin-top: 25px;
+            padding: 15px 0; /* Menos espaço interno */
+        }
+        .footer-section.about {
+            display: none;
+        }
+    
+        .footer-content {
+            gap: 5px; /* Menos espaço entre os blocos */
+            margin-bottom: 10px; /* Menos espaço abaixo do conteúdo */
+        }
+        
+        .footer-section {
+            width: 100%; /* Ocupar toda a largura */
+            margin-bottom: 10px; /* Reduz o espaçamento entre as seções */
+        }
+        .footer-section h3 {
+            font-size: 16px; /* Um pouco menor */
+            margin-bottom: 5px; /* Menos espaço abaixo do título */
+        }
+        
+        .footer-section p,
+        .footer-section ul li {
+            font-size: 9px;
+            margin: 2px 0; /* Reduz espaço entre os itens */
+        }
+        
+    
+        .footer-bottom {
+            font-size: 10px;
+            padding-top: 5px; /* Menos espaço acima do texto */
+        }
+        
+
+    /* Outros ajustes conforme necessário para elementos específicos */
+}
+
+/* Media Query para telas muito grandes (para evitar que o layout estique demais em telas grandes) */
+@media (min-width: 1600px) {
+    .game-container {
+        width: 80%;  /* Ajusta a largura para telas muito grandes, deixando o conteúdo mais centralizado */
+    }
+}
+
+
+
+
+  
+
+
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .container-genres {
+      padding: 1.5rem;
+    }
+    
+    .container-genres h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .container-genres a {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+    }
+  }

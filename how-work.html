@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Hub BR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+
+<header>
+    <h2><a href="/" class="home-button">Gaming Hub</a></h2>
+
+    <div class="botoes-centrais">
+     <button id="botao-home-novo" onclick="window.location.href='/'">
+        <h2>Home</h2>
+     </button>
+    
+
+
+     <div class="dropdown">
+        <button class="dropdown-btn">
+            Gêneros <span class="triangle">&#9662;</span>
+        </button>
+        <ul class="dropdown-content">
+            {% for genre in genres %}
+                <li>
+                    <a href="{{ url_for('genre', genre_name=genre) }}">{{ genre }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+     </div>
+
+     <button id="how-work" onclick="window.location.href='/how-work'">
+        <h2>Como funciona?</h2>
+     </button>
+    
+    
+      <button id="about" onclick="window.location.href=href='/about'"><h2>Sobre</h2></button>
+
+    </div>
+
+
+    <form action="/search" method="get">
+        <input type="text" name="query" placeholder="Busque um jogo..." required>
+      <button type="submit" class="search-button">Buscar</button>
+     </form>
+
+
+    
+
+
+
+</header>
+
+
+<body>
+    
+
+     <div class="about-text">
+
+     <h8> O que são as chaves de jogos?
+        As chaves de jogos (game keys) são códigos 100% originais que permitem ativar e baixar jogos em plataformas como a Steam! Você recebe um código único, insere na sua conta e pronto, jogo liberado! 
+        
+         As chaves são originais e seguras?
+        Com certeza! Todas as chaves vendidas nas lojas parceiras do Gaminghub vêm de distribuidores oficiais, então pode comprar sem medo! 
+        
+        🔹 Garantia de originalidade: Seu jogo fica para sempre na conta! 
+        🔹 Sem riscos: Nada de problemas com banimento ou perda do jogo! 
+        🔹 Preço mais baixo: Aproveite promoções com desconto real! 
+        
+         Como ativar uma chave na Steam?
+        Comprou sua chave? Agora bora ativar! 
+        
+        1️⃣ Abra a Steam e faça login na sua conta. 
+        2️⃣ Clique em "Jogos" no menu superior e depois em "Ativar um produto na Steam..." 
+        3️⃣ Clique em "Avançar" e depois em "Aceito" 
+        4️⃣ Digite a chave que comprou e clique em "Avançar"
+        5️⃣ Sucesso! O jogo foi adicionado à sua biblioteca!
+        
+        Caso seja uma chave para outra plataforma, a loja sempre informa onde ativar! 
+        
+         Agora é só instalar e se divertir! Bora pro game?</h8>
+
+        <video width="720" height="590" controls>
+            <source src="{{ url_for('static', filename='videos/tutorial.mp4') }}" type="video/mp4">
+            Seu navegador não suporta vídeos.
+        </video>
+        
+        
+
+     </div>
+
+     <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h3>Sobre nós</h3>
+                <p>O Gaminghub oferece as melhores ofertas em jogos digitais! Encontre chaves de jogos para Steam, com os preços mais baixos e promoções atualizadas. Nossa missão é ajudar você a economizar enquanto joga os melhores títulos.</p>
+            </div>
+            <div class="footer-section links">
+                <h3>Links úteis</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>   
+    
+                    <li><a href='{{ url_for('about') }}'>sobre</a></li>
+                    <li><a href='{{ url_for('how_work') }}'>Como funciona?</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social">
+                <h3>Redes sociais</h3>
+                <ul>
+                  <!--  <li><a href="#">Facebook</a></li>   Em Breve -->
+                  <a href="https://t.me/gaminghubi">Telegram</a></li>
+    
+                  <!--  <li><a href="#">YouTube</a></li>  Em Breve -->
+                    <li><a href="https://www.tiktok.com/@mundofeito_0?_t=ZM-8tmTwqs394X&_r=1">Tik Tok</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 GamingHub | Todos os direitos reservados | Feito por brasileiros 🇧🇷</p>
+        </div>
+    </footer>
+    
+</body>
+
+
+
+</html>

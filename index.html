@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta http-equiv="Content-Language" content="pt-br">
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Hub BR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+</head>
+
+
+<header>
+    <h2><a href="/" class="home-button">Gaming Hub</a></h2>
+
+    <div class="botoes-centrais">
+     <button id="botao-home-novo" onclick="window.location.href='/'">
+        <h2>Home</h2>
+     </button>
+    
+
+
+     <div class="dropdown">
+        <button class="dropdown-btn">
+            Gêneros <span class="triangle">&#9662;</span>
+        </button>
+        <ul class="dropdown-content">
+            {% for genre in genres %}
+                <li>
+                    <a href="{{ url_for('genre', genre_name=genre) }}">{{ genre }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+     </div>
+
+     <button id="how-work" onclick="window.location.href='/how-work'">
+        <h2>Como funciona?</h2>
+     </button>
+    
+    
+      <button id="about" onclick="window.location.href=href='/about'"><h2>Sobre</h2></button>
+
+    </div>
+
+
+    <form action="/search" method="get">
+        <input type="text" name="query" placeholder="Busque um jogo..." required>
+      <button type="submit" class="search-button">Buscar</button>
+     </form>
+
+
+    
+
+
+
+</header>
+
+
+<body>
+    {% if not query %}
+    {% if page == 1 %}
+    <div class="container-popular">
+        <h2 class="text-center">Jogos Mais Populares</h2>
+    
+        <!-- Carrossel -->
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                {% for game in popular_games %}
+                    <div class="swiper-slide">
+                        <div class="game">
+                            <a href="/jogo/{{ game['id'] }}"> <!-- Adiciona o link para a página do jogo -->
+                            <img src="{{ game['image'] }}" class="card-img-top" alt="{{ game['name'] }}">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ game['name'] }}</h5>
+                                {% if game['lowest_price'] %}
+                                    <p>Por apenas: <strong>{{ game['lowest_price']|format_currency }}</strong></p>
+                                {% else %}
+                                    <p><strong>Preço indisponível</strong></p>
+                                {% endif %}
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+            </div>
+    
+            <!-- Botões de navegação -->
+            <div id="next-button" class="swiper-button-next"></div>
+            <div id="prev-button" class="swiper-button-prev"></div>
+            
+    
+            <!-- Paginação -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    
+    
+    {% if not query %}
+    {% if page == 1 %}
+
+
+<div class="separa">
+
+
+
+</div>
+
+    <div class="container-popular">
+        <h2 class="text-center" style="pointer-events: none; cursor: default;">Melhores Ofertas</h2>
+
+        
+        <!-- Carrossel -->
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                {% for game in cheapest_games %}
+                    <div class="swiper-slide">
+                        <div class="game">
+                            <a href="/jogo/{{ game['id'] }}">
+                                <img src="{{ game['image'] }}" class="card-img-top" alt="{{ game['name'] }}">
+                            
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ game['name'] }}</h5>
+                                <p>Por apenas: <strong>{{ game['lowest_price']|format_currency }}</strong></p>
+                            </a>
+                            </div>
+                        </div>
+                    
+                    </div>
+                
+                {% endfor %}
+                
+            </div>
+            
+       
+            <!-- Botões de navegação -->
+            <div id="next-button" class="swiper-button-next"></div>
+            <div id="prev-button" class="swiper-button-prev"></div>
+            
+            
+    
+            <!-- Paginação -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    
+
+
+
+
+    {% if page == 1 %}
+
+    {% if not query %}
+
+    <h2 class="text-center-3" style="pointer-events: none; cursor: default;">Explore e Economize!</h2>
+    {% endif %}
+    {% endif %}
+
+
+    <div class="games">
+        
+        {% for game in games %}
+            <div class="game-2">
+                <a href="/jogo/{{ game.id }}">
+                    <img src="{{ game.image }}" alt="{{ game.name }} Image" />
+                    <h3>{{ game.name }}</h3>
+                    <p>Por apenas: <strong>{{ game.lowest_price|format_currency }}</strong></p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Paginação -->
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="/?page={{ page - 1 }}">Anterior</a>
+        {% endif %}
+    
+        {% for num in range(1, total_pages + 1) %}
+            <a href="/?page={{ num }}" class="{% if num == page %}active{% endif %}">{{ num }}</a>
+        {% endfor %}
+    
+        {% if page < total_pages %}
+            <a href="/?page={{ page + 1 }}">Próximo</a>
+        {% endif %}
+    </div>
+    
+    <style>
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .pagination a {
+        display: inline-block;
+        padding: 8px 12px;
+        margin: 0 5px;
+        border-radius: 5px;
+        background: #eee;
+        text-decoration: none;
+        color: #333;
+    }
+    
+    .pagination a.active {
+        background: #007bff;
+        color: white;
+    }
+    
+    .pagination a:hover {
+        background: #ddd;
+    }
+    </style>
+    
+
+
+
+
+</div>
+
+
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 5, // Mostra 5 jogos por padrão
+        slidesPerGroup: 5,
+        spaceBetween: 20,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        loop: false,
+        breakpoints: {
+            // Quando a largura da tela é >= 1200px
+            1200: {
+                slidesPerView: 5,
+                slidesPerGroup: 5
+            },
+            // Quando a largura da tela é >= 992px
+            992: {
+                slidesPerView: 4,
+                slidesPerGroup: 4
+            },
+            // Quando a largura da tela é >= 768px
+            768: {
+                slidesPerView: 3,
+                slidesPerGroup: 3
+            },
+            // Quando a largura da tela é >= 576px
+            576: {
+                slidesPerView: 2,
+                slidesPerGroup: 2
+            },
+            // Quando a largura da tela é < 576px
+            0: {
+                slidesPerView: 1,
+                slidesPerGroup: 1
+            }
+        }
+    });
+</script>
+
+
+
+
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section about">
+            <h3>Sobre nós</h3>
+            <p>O Gaminghub oferece as melhores ofertas em jogos digitais! Encontre chaves de jogos para Steam, com os preços mais baixos e promoções atualizadas. Nossa missão é ajudar você a economizar enquanto joga os melhores títulos.</p>
+        </div>
+        <div class="footer-section links">
+            <h3>Links úteis</h3>
+            <ul>
+                <li><a href="#">Home</a></li>   
+
+                <li><a href='{{ url_for('about') }}'>sobre</a></li>
+                <li><a href='{{ url_for('how_work') }}'>Como funciona?</a></li>
+            </ul>
+        </div>
+        <div class="footer-section social">
+            <h3>Redes sociais</h3>
+            <ul>
+              <li><a href="https://www.instagram.com/gaminghubr/">Instagram</a></li>   
+              <li> <a href="https://t.me/gaminghubi">Telegram</a></li>
+
+              <li> <a href="https://www.youtube.com/@Gamehubr">YouTube</a></li>
+                <li><a href="https://www.tiktok.com/@mundofeito_0?_t=ZM-8tmTwqs394X&_r=1">Tik Tok</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 GamingHub | Todos os direitos reservados | Feito por brasileiros 🇧🇷</p>
+    </div>
+</footer>
+
+</body>
+</html>
