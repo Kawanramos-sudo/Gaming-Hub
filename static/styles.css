@@ -488,13 +488,13 @@ header input:focus {
 }
 
 .game img {
-    width: 100%;
+    width: 200px;
     height: 270px;
     object-fit: cover; /* Para garantir que a imagem fique bem ajustada */
 }
 
 .game-2 img {
-    width: 100%;
+    width: 180px;
     height: 250px;
     object-fit: cover;
 }
@@ -928,6 +928,8 @@ body h1 {
     pointer-events: none; /* Impede que o título seja clicável */
     text-decoration: none;
     color: white;
+
+    
 }
 
 
@@ -949,8 +951,7 @@ body h1 {
 }
 
 .mySwiper {
-    width: 100%; /* Ocupa toda a largura do container */
-    height: 100%;
+
     background-color: #0b021b;
     border-radius: 15px;
     border: 1px solid white; /* Adiciona uma borda branca */
