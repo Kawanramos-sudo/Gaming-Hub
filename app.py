@@ -37,6 +37,14 @@ import re
 
 
 
+from flask import send_from_directory
+
+@app.route('/tutorial.mp4')
+def serve_video():
+    return send_from_directory('.', 'tutorial.mp4')
+
+
+
 def get_genres_from_db():
     try:
         conn = connect()
