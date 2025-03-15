@@ -26,7 +26,7 @@ app = Flask(__name__, template_folder=os.path.abspath('.'))
 app.config['CACHE_TYPE'] = 'simple'
 cache = Cache(app)
 
-@cache.cached(timeout=60, key_prefix="all_games")
+@cache.cached(timeout=300, key_prefix="all_games")
 def get_cached_games():
     return get_games_from_db()
 
