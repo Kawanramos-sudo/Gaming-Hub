@@ -89,7 +89,11 @@ def is_valid_url(url):
 
 
 
+import json
+
 def get_games_from_db():
+    conn = None  # 🔹 Garante que a variável `conn` sempre exista
+
     try:
         conn = get_read_connection()
         if not conn:
@@ -141,8 +145,9 @@ def get_games_from_db():
         return []
     
     finally:
-        if conn:
-            release_connection(conn)  # 🔹 Garante que a conexão será liberada
+        if conn is not None:  # 🔹 Evita erro caso `conn` não tenha sido inicializada
+            release_connection(conn)
+
 
 
 
