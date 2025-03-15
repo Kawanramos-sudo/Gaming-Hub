@@ -1,83 +1,23 @@
-/* Estilo da grid de jogos */
-.search-results .games-grid {
-    display: flex;  /* Usando flexbox para exibir os itens lado a lado */
-    flex-wrap: wrap;  /* Para quebrar a linha quando o espaço acabar */
-    gap: 20px;  /* Espaço entre os itens */
-    justify-content: flex-start;  /* Alinha os itens à esquerda */
-    padding-left: 20px;  /* Adiciona um pequeno espaçamento à esquerda */
-}
+
 form {
     display: flex;
     gap: 10px;
     width: 27%;
-    justify-content: flex-end; /* Mantém o input e botão à direita */
+    justify-content: flex-end;
     flex: 1;
 }
 
-
-
-/* Estilo do card de jogo */
-.search-results .game-card {
-    background-color: #282846;
-    border-radius: 10px;
-    overflow: hidden;
-    text-align: center;
-    padding: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 200px; /* Ajuste o tamanho do botão */
-    height: 350px; /* Ajuste a altura do botão */
-    margin-left: 0; /* Alinha à esquerda */
-    float: left; /* Garante que os itens fiquem à esquerda */
-}
-
-
-/* Efeito ao passar o mouse sobre o card */
-.search-results .game-card:hover {
-    transform: scale(1.05);  /* Aumenta um pouco o tamanho do card */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-/* Estilo da imagem dentro do card */
-.search-results .game-card img {
-    width: 100%;  /* Imagem ocupa 100% da largura do card */
-    height: 85%;  /* Altura ajustada automaticamente */
-    border-radius: 10px;
-    object-fit: cover;  /* Ajusta a imagem para cobrir a área sem distorcer */
-}
-
-/* Título do jogo */
-.search-results .game-card h3 {
-    color: white;
-    margin-top: 10px;
-    font-size: 1.1rem;
-}
-
-
-.search-results ul li img {
-    width: 150px;  /* Ajuste a largura da imagem */
-    height: 150px; /* Ajuste a altura da imagem */
-    object-fit: cover; /* Mantém a imagem proporcional e cortada, se necessário */
-    border-radius: 15px; /* Bordas arredondadas */
-    border: 2px solid white; /* Adiciona contorno branco */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-
-
-/* Ajuste para que o carrossel fique abaixo da descrição do jogo */
 .games-container {
     max-width: 1200px;
     margin: 20px auto;
     display: flex;
-    flex-direction: column; /* Mudando para coluna */
+    flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between; /* Espaça os itens */
+    justify-content: space-between;
     gap: 20px;
-    padding: 10px; /* Adiciona espaço interno */
-    margin: 10px auto; /* Reduz a margem superior */
+    padding: 10px;
+    margin: 10px auto;
 }
-
-
 
 .carousel {
     width: 100%;
@@ -93,7 +33,7 @@ form {
     width: 540px;
     height: 290px;
     border-radius: 6px;
-    border: 2px solid white;  /* Borda de 4px de espessura e cor branca */
+    border: 2px solid white;
     position: absolute;
     top: 20px;
     left: 50%;
@@ -231,10 +171,6 @@ form {
     margin-top: 25px;
 }
 
-
-/* Estilo da imagem do jogo */
-
-
 .text-center-3{
     margin-top: 50px;
   
@@ -261,9 +197,9 @@ form {
 
 /* Título dos melhores valores */
 .titulo-container {
-    position: relative; /* Permite o posicionamento absoluto em relação ao .game-details */
-    margin-top: 60px; /* Ajuste a distância do topo conforme necessário */
-    text-align: center; /* Centraliza o título */
+    position: relative;
+    margin-top: 60px;
+    text-align: center;
 }
 
 /* Estilo do carrossel */
@@ -278,10 +214,10 @@ form {
 
 
 .carousel img.active {
-    opacity: 1; /* Apenas a imagem ativa será exibida */
+    opacity: 1;
 }
 
-/* Estilo dos indicadores */
+
 .carousel-indicators {
     position: absolute;
     bottom: 10px;
@@ -291,14 +227,9 @@ form {
     gap: 10px;
 }
 
-
-
-
-
-
 .game-details p {
     font-size: 1.2rem;
-    line-height: 0rem; /* Aumentando espaçamento entre as linhas */
+    line-height: 0rem;
 }
 
 
@@ -307,19 +238,13 @@ form {
 }
 
 
-
-
-
-
-
-/* Barra de pesquisa e botão */
 .search-button {
-    background-color: #4CAF50; /* Cor de fundo verde */
-    color: white; /* Texto branco */
+    background-color: #4CAF50; 
+    color: white; 
     border: none;
     padding: 10px 20px;
     font-size: 16px;
-    border-radius: 25px; /* Bordas arredondadas */
+    border-radius: 25px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -327,7 +252,7 @@ form {
 }
 
 .search-button:hover {
-    background-color: #45a049; /* Cor de fundo ao passar o mouse */
+    background-color: #45a049;
 }
 
 input[type="text"] {
@@ -344,7 +269,6 @@ header a {
     color: white;
 }
 
-/* Estilo da página do jogo */
 .container {
     max-width: 800px;
     margin: auto;
@@ -366,12 +290,6 @@ header a {
     margin-bottom: 0px;
 }
 
-
-
-
-
-
-/* Botão da página inicial */
 header .home-button {
     text-decoration: none;
     color: white;
@@ -380,7 +298,7 @@ header .home-button {
     border-radius: 8px;
     background-color: #282846;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    white-space: nowrap; /* Impede a quebra de linha */
+    white-space: nowrap;
 }
 
 header .home-button:hover {
@@ -407,7 +325,7 @@ header {
 }
 
 header h2 {
-    flex: 1; /* Ocupa espaço na esquerda */
+    flex: 1;
     margin: 0;
 }
 
@@ -420,7 +338,7 @@ header input {
     padding: 5px 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
-    border-radius: 8px; /* Bordas arredondadas */
+    border-radius: 8px;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     background-color: #1e1e2f;
@@ -428,16 +346,16 @@ header input {
     max-width: 58%;
 }
 
-@media (max-width: 992px) { 
-    header input {
-        max-width: 20%; /* Permite que ocupe mais espaço */
-    }
-}
-
 header input:focus {
     border-color: #007bff;
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
 }
+
+.separa {
+
+    height: 23px;
+
+    }
 
 .games {
     flex: 2;
@@ -542,8 +460,7 @@ a {
 /* Estilo para a caixa de links das lojas */
 .container-lojas {
     position: relative;  /* Troca para relative para ajustar o posicionamento de outros elementos */
-    width: 1000px;  /* Largura ajustada para caber no centro da tela */
-    min-height: 1%; /* Altura mínima mais realista */
+    width: 83%;  /* Largura ajustada para caber no centro da tela */
     max-height: 100%; /* Altura máxima ajustada */
     padding: 16px;
     box-sizing: border-box;
@@ -589,10 +506,6 @@ a {
     margin-right: 10px;
 }
 
-
-
-
-
 .links-lojas.oculto {
     opacity: 0;
     display: none;
@@ -601,7 +514,6 @@ a {
     pointer-events: none;
     transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
-
 
 .links-lojas {
     display: flex;
@@ -703,23 +615,6 @@ a {
     margin-bottom: 10px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .botoes-centrais {
     display: flex;
     align-items: center;
@@ -727,14 +622,6 @@ a {
     gap: 15px;
     flex: 2; /* Faz essa seção ocupar o centro */
 }
-
-
-
-
-
-
-
-
 
   #how-work {
     background: var(--card-bg);
@@ -757,8 +644,6 @@ a {
     font-weight: 800;
 
   }
-
-
   video {
     width: 35%;
     height: auto;
@@ -768,9 +653,6 @@ a {
     border: 2px solid white;  /* Borda branca de 5px */
     margin-top: 40px;
 }
-
-
-
 
 #about {
     background: var(--card-bg);
@@ -794,8 +676,6 @@ a {
     font-size: 1.2rem;
     font-weight: 800;
 }
-
-
 
   #botao-home-novo {
     background: var(--card-bg);
@@ -821,9 +701,6 @@ a {
 
   }
 
-
-
- /* Estilização do dropdown */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -1002,10 +879,12 @@ body h1 {
 
 /* Estiliza os botões de navegação */
 .swiper-button-next, .swiper-button-prev {
+    width: 40px;
+    height: 40px;
     color: #fff;
     background: rgba(0, 0, 0, 0.089);
-   border-radius: 25%;
-padding: 3px;
+    border-radius: 25%;
+    padding: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1126,16 +1005,10 @@ border: 1px solid white; /* Adiciona uma borda branca */
 
 
 .game-tumb img {
-    object-fit:fill; /* Para garantir que a imagem fique bem ajustada */
-
-max-height: 80%;
+    object-fit:fill;
     width: 100%;
     border-radius: 5px;
 }
-
-
-
-
 /*-----------------------Roda pé-------------------------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -1368,7 +1241,9 @@ max-height: 80%;
     justify-content: center; /* Centraliza os itens dentro do grid */
 }
 
-
+#links .links-lojas:first-of-type:before {
+    content: none;
+}
 
 .game-2 {
     background-color: #282846;
@@ -1387,21 +1262,6 @@ max-height: 80%;
     transform: scale(1.01); /* Cresce apenas 2% */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
-
-    .carousel img {
-        width: 80%;
-        max-height: 75%;
-        border-radius: 6px;
-        border: 2px solid white;  /* Borda de 4px de espessura e cor branca */
-        position: absolute;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        opacity: 0;
-        transition: opacity 0.8s ease-in-out;
-    }
-
-
 
     .detais-carousel{
         display: flex; flex-direction: column;
@@ -1498,17 +1358,11 @@ max-height: 80%;
     .carousel img {
         width: 98%;
         max-height: 83.6%;
-        border-radius: 6px;
-        border: 2px solid white;
-        position: absolute;
-        top: 20px;
-        opacity: 0;
         transition: opacity 0.8s ease-in-out;
         background-color: #000000;
         object-fit:contain; /* Faz a imagem preencher sem distorcer */
         object-position: center; /* Mantém o corte centralizado */
     }
-    
 
 
     #about{
@@ -1517,7 +1371,7 @@ max-height: 80%;
     }
 
     .swiper-slide .game {
- margin-top: 6%;
+     margin-top: 6%;
     }
  
  #about h2{
@@ -1547,7 +1401,7 @@ max-height: 80%;
 
       .footer-section a {
 
-   font-size: 0.7rem;
+       font-size: 0.7rem;
 
 
       }
@@ -1599,7 +1453,6 @@ max-height: 80%;
         margin-left: 15px;
     }
 
-
     .game-image img {
         border-radius: 6px;
         border: 2px solid white;  /* Borda de 4px de espessura e cor branca */
@@ -1609,7 +1462,6 @@ max-height: 80%;
         border-radius: 8px;
         margin: 0 auto;
     }
-
 
     .carousel-container {
         position:static;
@@ -1622,7 +1474,6 @@ max-height: 80%;
         display: flex;
         justify-content: center;
     }
-
 
     .game-content {
         margin-top: 30px;
@@ -1640,13 +1491,9 @@ max-height: 80%;
         padding: 5px;
     }
 
-
-
-
     .container-lojas {
         margin: 0;
         z-index: 0; /* Garante que fique atrás */
-        position: relative;
         width: 90%;
         height: 65%;
         max-width: 450px;
@@ -1667,8 +1514,6 @@ max-height: 80%;
         flex-wrap: wrap;
     }
 
-
-
     header {
         margin-bottom: 30px;
         flex-direction: column; /* Empilha os elementos */
@@ -1677,8 +1522,6 @@ max-height: 80%;
         padding: 10px 20px; /* Ajusta o espaçamento */
         border-bottom: 2px solid white;  /* Borda branca de 5px */
     }
-
-
 
 
     .about-text {
@@ -1757,15 +1600,11 @@ max-height: 80%;
             margin: 2px 0; /* Reduz espaço entre os itens */
         }
         
-    
         .footer-bottom {
             font-size: 10px;
             padding-top: 5px; /* Menos espaço acima do texto */
         }
         
-
-
-
         .discord-float {
          display:none
         }
@@ -1773,27 +1612,14 @@ max-height: 80%;
         .telegram-float{
             display: none;
         }
-        
-
-
-    /* Outros ajustes conforme necessário para elementos específicos */
 }
 
-/* Media Query para telas muito grandes (para evitar que o layout estique demais em telas grandes) */
 @media (min-width: 1600px) {
     .game-container {
-        width: 80%;  /* Ajusta a largura para telas muito grandes, deixando o conteúdo mais centralizado */
+        width: 80%;
     }
 }
 
-
-
-
-  
-
-
-
-  /* Responsive adjustments */
   @media (max-width: 640px) {
     .container-genres {
       padding: 1.5rem;
@@ -1809,3 +1635,8 @@ max-height: 80%;
       font-size: 1rem;
     }
   }
+  @media (max-width: 992px) { 
+    header input {
+        max-width: 20%; /* Permite que ocupe mais espaço */
+    }
+}

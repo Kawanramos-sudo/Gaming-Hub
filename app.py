@@ -86,11 +86,6 @@ def is_valid_url(url):
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
     return re.match(regex, url) is not None
 
-
-
-
-import json
-
 def get_games_from_db():
     conn = None  # 🔹 Garante que a variável `conn` sempre exista
 
