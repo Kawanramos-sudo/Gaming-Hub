@@ -23,7 +23,7 @@ WRITE_PASS = os.getenv("DB_WRITE_PASS")
 # Criar pool de conexões para leitura
 read_pool = psycopg2.pool.SimpleConnectionPool(
     minconn=2,
-    maxconn=100,
+    maxconn=200,
     user=READ_USER,
     password=READ_PASS,
     connect_timeout=5,
@@ -33,7 +33,7 @@ read_pool = psycopg2.pool.SimpleConnectionPool(
 # Criar pool de conexões para escrita
 write_pool = psycopg2.pool.SimpleConnectionPool(
     minconn=1,
-    maxconn=15,
+    maxconn=150,
     user=WRITE_USER,
     password=WRITE_PASS,
     **DB_CONFIG
