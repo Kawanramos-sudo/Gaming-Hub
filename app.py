@@ -1,20 +1,8 @@
 from flask import Flask, request, render_template, abort, session, jsonify
 import os
 import psycopg2
-
-def connect():
-    try:
-        conn = psycopg2.connect(
-            dbname=os.getenv('DB_NAME'),
-            user=os.getenv('DB_USER'),
-            password=os.getenv('DB_PASSWORD'),
-            host=os.getenv('DB_HOST'),
-            port=os.getenv('DB_PORT')
-        )
-        return conn
-    except Exception as e:
-        print(f"Erro ao conectar ao banco de dados: {e}")
-        return None
+from flask_caching import Cache
+from database import get_write_connection, release_connection, get_read_connection
 from decimal import Decimal
 import requests
 import json
@@ -29,7 +17,16 @@ import os
 
 
 # Define o diretório raiz como o local dos templates
-app = Flask(__name__, template_folder=os.getcwd())
+app = Flask(__name__, template_folder="templates")  # Garante que busca os HTML na pasta correta
+
+
+app.config['CACHE_TYPE'] = 'simple'
+cache = Cache(app)
+
+@cache.cached(timeout=60, key_prefix="all_games")
+def get_cached_games():
+    return get_games_from_db()
+
 
 
 
@@ -39,7 +36,7 @@ import re
 
 def get_genres_from_db():
     try:
-        conn = connect()
+        conn = get_read_connection()  # Usa conexão do pool de leitura
         if not conn:
             print("Erro: Não foi possível conectar ao banco de dados.")
             return []
@@ -69,6 +66,7 @@ def get_genres_from_db():
     finally:
         if conn:
             conn.close()
+            release_connection(conn)  # Devolve conexão ao pool
 
 
 
@@ -88,104 +86,67 @@ def is_valid_url(url):
 
 
 
-
-
 def get_games_from_db():
     try:
-        conn = connect()
+        conn = get_read_connection()
         if not conn:
             print("Erro: Não foi possível conectar ao banco de dados.")
             return []
 
-        cursor = conn.cursor()
-        query = """
-        SELECT 
-            g.id, 
-            g.name, 
-            g.description, 
-            g.genres,
-            g.release_date, 
-            g.image, 
-            g.images, 
-            g.green_man_nome,
-            g.popularity,  -- Adiciona a popularidade,
-            gp.store_name, 
-            gp.price, 
-            gp.url
-        FROM 
-            games g
-        LEFT JOIN 
-            game_prices gp 
-        ON 
-            g.id = gp.game_id
-        """
-        cursor.execute(query)
-        rows = cursor.fetchall()
-
-        if not rows:
-            print("Nenhum dado encontrado no banco de dados.")
-            return []
+        with conn.cursor() as cursor:
+            query = """
+            SELECT 
+                g.id, g.name, g.description, g.genres, g.release_date, 
+                g.image, g.images, g.green_man_nome, g.popularity, 
+                gp.store_name, gp.price, gp.url
+            FROM 
+                games g
+            LEFT JOIN 
+                game_prices gp 
+            ON 
+                g.id = gp.game_id
+            """
+            cursor.execute(query)
+            rows = cursor.fetchall()
 
         games = {}
         for row in rows:
             game_id, name, description, genres, release_date, image, images, green_man_nome, popularity, store_name, price, url = row
 
-            # Verifique se os campos não são None
-            name = name if name is not None else "Nome não disponível"
-            description = description if description is not None else "Descrição não disponível"
-            release_date = release_date if release_date is not None else "Data não disponível"
-            image_url = image if image else ""  # Caso a imagem seja None ou vazia
-
-            # Tratando o campo 'images'
-            images_list = []
-            if images is not None:
-                if isinstance(images, str):
-                    try:
-                        images_list = json.loads(images) if images else []
-                    except json.JSONDecodeError:
-                        print(f"Erro ao decodificar o campo 'images' para o jogo {game_id}.")
-                elif isinstance(images, list):
-                    images_list = images
-                else:
-                    print(f"Campo 'images' mal formatado para o jogo {game_id}.")
-
             if game_id not in games:
                 games[game_id] = {
-                    "id": game_id,
-                    "name": name,
-                    "description": description,
-                    "genres": genres,
-                    "release_date": release_date,
-                    "image": image_url,
-                    "images": images_list,
-                    "green_man_nome": green_man_nome,
-                    "popularity": popularity,
-                    "links": []
+                    "id": game_id, "name": name or "Nome não disponível",
+                    "description": description or "Descrição não disponível",
+                    "genres": genres, "release_date": release_date or "Data não disponível",
+                    "image": image or "", "images": json.loads(images) if isinstance(images, str) else [],
+                    "green_man_nome": green_man_nome, "popularity": popularity,
+                    "links": [],
+                    "lowest_price": None  # 🔹 Sempre adiciona a chave
                 }
 
-            # Verificar se store_name, url e preço estão disponíveis antes de adicionar o link
-            if store_name and url and is_valid_url(url) and price and price > 0:
-                games[game_id]["links"].append({
-                    "store": store_name,
-                    "price": price,
-                    "url": url
-                })
+            if store_name and url and price and price > 0:
+                games[game_id]["links"].append({"store": store_name, "price": price, "url": url})
+
+                # 🔹 Atualiza o menor preço
+                if games[game_id]["lowest_price"] is None or price < games[game_id]["lowest_price"]:
+                    games[game_id]["lowest_price"] = price
 
         return list(games.values())
 
     except Exception as e:
         print(f"Erro ao buscar jogos do banco: {e}")
         return []
-
+    
     finally:
         if conn:
-            conn.close()
+            release_connection(conn)  # 🔹 Garante que a conexão será liberada
+
 
 
 def increase_popularity(game_id):
     print(f"Aumentando popularidade do jogo ID {game_id}")  # TESTE
 
-    conn = connect()
+    conn = get_write_connection()
     if not conn:
         print("Erro: Não foi possível conectar ao banco de dados.")
         return None
@@ -218,7 +179,7 @@ def increase_popularity(game_id):
 
     finally:
         cursor.close()
-        conn.close()
+        release_connection(conn)  # Devolve conexão ao pool
 
 
 
@@ -227,7 +188,7 @@ def increase_popularity(game_id):
 
 
 def get_game_by_id(game_id):
-    conn = connect()
+    conn = get_read_connection()  # Usa conexão do pool de leitura
     if not conn:
         print("Erro: Não foi possível conectar ao banco de dados.")
         return None
@@ -303,14 +264,14 @@ def get_game_by_id(game_id):
 
     finally:
         cursor.close()
-        conn.close()
+        release_connection(conn)  # Devolve conexão ao pool
 
 
 
 
 
 def get_cheapest_games():
-    conn = connect()
+    conn = get_read_connection()  # Usa conexão do pool de leitura
     if not conn:
         return []
 
@@ -332,7 +293,7 @@ def get_cheapest_games():
         print(f"Erro ao buscar os jogos mais baratos: {e}")
         return []
     finally:
-        conn.close()
+        release_connection(conn)  # Devolve conexão ao pool
 
 
 # Função para calcular o menor preço
@@ -397,6 +358,12 @@ def genre(genre_name):
         if genres is not None:
             genre_list = [g.strip().lower() for g in genres.split(',')]
             if genre_name.lower() in genre_list:
+                # ✅ Formata a data dentro do loop
+                if isinstance(game["release_date"], str):
+                    game["release_date"] = game["release_date"]  # Já é string, mantém
+                elif game["release_date"] is not None:
+                    game["release_date"] = game["release_date"].strftime("%d/%m/%Y")
+                
                 filtered_games.append(game)
             else:
                 print(f"Jogo '{game['name']}' não corresponde ao gênero '{genre_name}'. Gêneros: {genre_list}")
@@ -413,13 +380,11 @@ def genre(genre_name):
     return render_template('genre.html', games=filtered_games, genre_name=genre_name, genres=genres)
 
 
-game["release_date"] = game["release_date"].strftime("%d/%m/%Y")
-
 
 
 def get_related_games(game_id):
     try:
-        conn = connect()
+        conn = get_read_connection()  # Usa conexão do pool de leitura
         if not conn:
             print("Erro: Não foi possível conectar ao banco de dados.")
             return []
@@ -511,7 +476,7 @@ def get_related_games(game_id):
 
     finally:
         if conn:
-            conn.close()
+            release_connection(conn)  # Devolve conexão ao pool
 
 
 
@@ -567,76 +532,38 @@ def increase_popularity_route(game_id):
 @app.route('/')
 def home():
     page = request.args.get("page", 1, type=int)  # Página atual
-    per_page = 15  # Jogos por página
+    per_page = 15  # Número de jogos por página
     offset = (page - 1) * per_page  
 
-    conn = connect()
-    cur = conn.cursor()
+    all_games = get_cached_games()  # ✅ Obtém os jogos do cache
+    total_games = len(all_games)  # ✅ Calcula o total de jogos no cache
+    total_pages = (total_games + per_page - 1) // per_page  # 🔹 Arredondamento para cima
 
-    # Contar total de jogos para a paginação
-    cur.execute("SELECT COUNT(*) FROM games")
-    total_games = cur.fetchone()[0]
-    total_pages = (total_games + per_page - 1) // per_page  # Arredonda para cima
+    # Paginação dos jogos
+    paginated_games = all_games[offset : offset + per_page]
 
-    # Buscar os jogos com menor preço válido (paginação aplicada)
-    cur.execute("""
-    SELECT g.id, g.name, g.image, COALESCE(
-        (SELECT MIN(price) FROM game_prices WHERE game_prices.game_id = g.id AND price IS NOT NULL AND price > 0),
-        NULL
-    ) AS lowest_price
-    FROM games g
-    ORDER BY g.id
-    LIMIT %s OFFSET %s;
-    """, (per_page, offset))
+    # Buscar os 15 jogos mais populares
+    popular_games = sorted(all_games, key=lambda g: g["popularity"], reverse=True)[:15]
 
+    # Buscar os 15 jogos mais baratos (com preço válido)
+    cheapest_games = sorted(
+        [g for g in all_games if g["lowest_price"] is not None], 
+        key=lambda g: g["lowest_price"]
+    )[:15]
 
-    all_games = [
-        {"id": row[0], "name": row[1], "image": row[2], "lowest_price": row[3]}
-        for row in cur.fetchall()
-    ]
-
-    # Buscar os 15 jogos mais populares com menor preço válido
-    cur.execute("""
-        SELECT g.id, g.name, g.image, COALESCE(
-            (SELECT MIN(price) FROM game_prices WHERE game_prices.game_id = g.id AND price IS NOT NULL AND price > 0),
-            NULL
-        ) AS lowest_price
-        FROM games g ORDER BY g.popularity DESC LIMIT 15;
-    """)
-    popular_games = [
-        {"id": row[0], "name": row[1], "image": row[2], "lowest_price": row[3]}
-        for row in cur.fetchall()
-    ]
-
-    # Buscar os 15 jogos mais baratos
-    cur.execute("""
-        SELECT g.id, g.name, g.image, MIN(gp.price) as lowest_price
-        FROM games g
-        JOIN game_prices gp ON g.id = gp.game_id
-        WHERE gp.price IS NOT NULL AND gp.price > 0
-        GROUP BY g.id, g.name, g.image
-        ORDER BY lowest_price ASC
-        LIMIT 15;
-    """)
-    cheapest_games = [
-        {"id": row[0], "name": row[1], "image": row[2], "lowest_price": row[3]}
-        for row in cur.fetchall()
-    ]
-
-    cur.close()
-    conn.close()
-
-    genres = get_genres_from_db()  # Pega os gêneros do banco
+    genres = get_genres_from_db()  # ✅ Ainda precisa consultar o banco para os gêneros
 
     return render_template(
         'index.html',
-        games=all_games,
+        games=paginated_games,
         popular_games=popular_games,
         cheapest_games=cheapest_games,
         genres=genres,
         page=page,
         total_pages=total_pages
     )
+
+
 
 
 
@@ -652,7 +579,7 @@ def search():
     if not query or len(query) > 100:
         return render_template('index.html', games=[], query=query, genres=get_genres_from_db(), page=1, total_pages=1)
 
-    conn = connect()
+    conn = get_read_connection()  # ✅ Usa o pool de leitura
     if not conn:
         return render_template('index.html', games=[], query=query, genres=get_genres_from_db(), page=1, total_pages=1)
 
@@ -682,7 +609,7 @@ def search():
         return render_template('index.html', games=[], query=query, genres=get_genres_from_db(), page=1, total_pages=1)
 
     finally:
-        conn.close()
+        release_connection(conn)  # ✅ Devolve a conexão ao pool (eficiente!)
 
 
 
@@ -735,7 +662,3 @@ def format_currency(value):
     except ValueError:
         return value
 
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=4000, debug=True)
