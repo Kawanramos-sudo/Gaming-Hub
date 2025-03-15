@@ -17,7 +17,7 @@ import os
 
 
 # Define o diretório raiz como o local dos templates
-app = Flask(__name__, template_folder="templates")  # Garante que busca os HTML na pasta correta
+app = Flask(__name__)  # Garante que busca os HTML na pasta correta
 
 
 app.config['CACHE_TYPE'] = 'simple'
