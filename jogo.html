@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-
+    <meta property="og:title" content="{{ jogo.name }} em promoção!">
+    <meta property="og:description" content="Aproveite o desconto em {{ jogo.name }} e economize!">
+    <meta property="og:image" content="{{ jogo.tumb }}">
+    <meta property="og:url" content="https://www.pixelprice.com.br/jogo/{{ jogo.id }}">
+    <meta property="og:type" content="website">
+    
 
 </head>
 <a href="https://t.me/pixelpricesales" class="telegram-float" target="_blank">
