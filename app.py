@@ -16,8 +16,11 @@ from flask_talisman import Talisman
 import os
 
 
-# Define o diretório raiz como o local dos templates
-app = Flask(__name__)  # Garante que busca os HTML na pasta correta
+from flask import Flask
+import os
+
+app = Flask(__name__, template_folder=os.path.abspath('.'))
+
 
 
 app.config['CACHE_TYPE'] = 'simple'
