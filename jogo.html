@@ -10,6 +10,13 @@
 
 
 </head>
+<a href="https://t.me/pixelpricesales" class="telegram-float" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Telegram_Messenger.png" alt="Telegram">
+</a>
+
+<a href="https://discord.gg/SzFDtPQFxj" class="discord-float" target="_blank">
+    <img src="https://i.ibb.co/kgG3zj0B/bb-W4u80g7y-IVxsphv9di-Nw.png" alt="Discord">
+</a>
 <body>
 
     <header>
@@ -108,29 +115,25 @@
             <div id="lojas-container">
                 <div id="links" class="links">
                     {% if jogo.get('links') %}
-                    {% for loja in jogo['links'] %}
-                    {% set preco_formatado = loja['price']|format_currency %}
-                    {% if loja['price'] is not none and preco_formatado != "Fora de Estoque" %}
-                        <div class="links-lojas {% if loop.index > 3 %}oculto{% endif %}">
-                            <a href="{{ loja['url'] }}" class="link-item" target="_blank">
-                                <img src="{{ store_icons[loja['store']] }}" alt="{{ loja['store'] }}" class="icon">
-                                <span class="preco">{{ preco_formatado }}</span>
-                            </a>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                
+                        {% for loja in jogo['links'] %}
+                            {% if loja['price'] is not none %}  {# Verifica se há preço antes de renderizar o link #}
+                                <div class="links-lojas {% if loop.index > 3 %}oculto{% endif %}">
+                                    <a href="{{ loja['url'] }}" class="link-item" target="_blank">
+                                        <img src="{{ store_icons[loja['store']] }}" alt="{{ loja['store'] }}" class="icon">
+                                        <span class="preco">{{ loja['price']|format_currency }}</span>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     {% else %}
                         <p>Não há links de loja disponíveis para este jogo.</p>
                     {% endif %}
                 </div>
-                {% set links_validos = jogo['links']|selectattr('price', 'ne', none)|list %}
-                {% if links_validos|length > 3 %}
+                {% if jogo.get('links') and jogo['links']|selectattr('price', 'ne', none)|list|length > 3 %}
                     <button id="mostrar-tudo" class="mostrar-tudo" onclick="mostrarLinks()">
                         Mostrar tudo <span class="triangulo">▼</span>
                     </button>
                 {% endif %}
-                
             </div>
         </div>
     </div>
@@ -337,13 +340,14 @@
         <div class="footer-section social">
             <h3>Redes sociais</h3>
             <ul>
-              <!--  <li><a href="#">Facebook</a></li>   Em Breve -->
-              <a href="https://t.me/gaminghubi">Telegram</a></li>
+              <li><a href="https://www.instagram.com/pixel_price_br/">Instagram</a></li>   
+              <li> <a href="https://t.me/pixelpricesales">Telegram</a></li>
 
-              <!--  <li><a href="#">YouTube</a></li>  Em Breve -->
-                <li><a href="https://www.tiktok.com/@mundofeito_0?_t=ZM-8tmTwqs394X&_r=1">Tik Tok</a></li>
+              <li> <a href="https://www.youtube.com/@Pixel_Price">YouTube</a></li>
+                <li><a href="https://www.tiktok.com/@pixel_price_br?_t=ZM-8uhvNLNG4N5&_r=1">Tik Tok</a></li>
             </ul>
         </div>
+    </div>
     </div>
     <div class="footer-bottom">
         <p>&copy; 2025 GamingHub | Todos os direitos reservados | Feito por brasileiros 🇧🇷</p>
