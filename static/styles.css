@@ -371,6 +371,7 @@ header input:focus {
 
 .game {
     background-color: #282846;
+    will-change: transform, box-shadow;
     border-radius: 10px;
     overflow: hidden;
     text-align: center;
