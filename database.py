@@ -39,6 +39,54 @@ write_pool = psycopg2.pool.SimpleConnectionPool(
     **DB_CONFIG
 )
 
+
+
+
+
+
+
+
+import psycopg2
+import os
+import sys
+import locale
+
+# Configuração de codificação
+print("Codificação padrão do terminal:", locale.getpreferredencoding())
+print("Codificação de stdout:", sys.stdout.encoding)
+print("Codificação de stderr:", sys.stderr.encoding)
+
+# Reconfigura a codificação padrão de saída para UTF-8
+sys.stdout.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')
+# Define UTF-8 como padrão
+os.environ["PYTHONIOENCODING"] = "utf-8"
+
+
+UPD_USER = os.getenv("DB_UPD_USER")
+UPD_PASS = os.getenv("DB_UPD_PASS")
+
+
+# Função para conectar ao banco
+def connect():
+    try:
+        conn = psycopg2.connect(
+            user=UPD_USER,                # Usuário do banco de dados
+            password=UPD_PASS,
+            client_encoding="UTF8",
+            **DB_CONFIG
+        )
+        print("Conexão estabelecida com sucesso.")
+        return conn
+    except Exception as e:
+        print("Erro ao conectar ao banco:", e)
+        return None
+
+
+
+
+
+
 def get_read_connection():
     return read_pool.getconn()
 

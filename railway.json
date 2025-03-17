@@ -1,0 +1,8 @@
+{
+  "services": {
+    "atualizar_precos": {
+      "command": "python ATUALIZAR_PRECOS.py",
+      "schedule": "0 */2 * * *" 
+    }
+  }
+}
