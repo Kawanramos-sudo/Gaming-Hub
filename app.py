@@ -36,8 +36,8 @@ def get_cached_games():
 import re
 
 
-
 def get_genres_from_db():
+    conn = None  # Inicializa a variável para evitar UnboundLocalError
     try:
         conn = get_read_connection()  # Usa conexão do pool de leitura
         if not conn:
@@ -45,9 +45,9 @@ def get_genres_from_db():
             return []
 
         with conn.cursor() as cursor:
-         query = "SELECT DISTINCT genres FROM games WHERE genres IS NOT NULL"
-         cursor.execute(query)
-         rows = cursor.fetchall()
+            query = "SELECT DISTINCT genres FROM games WHERE genres IS NOT NULL"
+            cursor.execute(query)
+            rows = cursor.fetchall()
 
         if not rows:
             print("Nenhum gênero encontrado no banco de dados.")
@@ -63,13 +63,14 @@ def get_genres_from_db():
         return sorted(genres)  # Retorna uma lista ordenada de gêneros
 
     except Exception as e:
-        print(f"Erro")
+        print(f"Erro ao obter gêneros do banco: {e}")
         return []
 
     finally:
-        if conn:
+        if conn:  # Fecha conexão apenas se ela foi aberta
             conn.close()
             release_connection(conn)  # Devolve conexão ao pool
+
 
 
 
