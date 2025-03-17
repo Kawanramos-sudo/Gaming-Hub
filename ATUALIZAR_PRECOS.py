@@ -1,7 +1,7 @@
 import requests
 from requests.auth import HTTPBasicAuth
 import xml.etree.ElementTree as ET
-from database import connect
+from database_UPD import connect
 from bs4 import BeautifulSoup
 import re
 from colorama import Fore, Style, init
