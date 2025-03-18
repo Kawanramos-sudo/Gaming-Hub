@@ -22,7 +22,10 @@ jobs:
           pip install -r requirements.txt  # Caso tenha um arquivo de dependências
 
       - name: Mostrar variáveis de ambiente (Debug)
-        run: env | grep DATABASE
+        run: printenv | sort
+        env:
+         DATABASE_PUBLIC_URL: ${{ secrets.DATABASE_PUBLIC_URL }}
+
 
       - name: Executar script de atualização de preços
         env:
