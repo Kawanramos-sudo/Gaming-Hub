@@ -2,6 +2,7 @@ import os
 import psycopg2
 from psycopg2 import sql
 from urllib.parse import urlparse
+from dotenv import load_dotenv
 
 def connect():
     # Obter a URL do banco de dados da variável de ambiente
