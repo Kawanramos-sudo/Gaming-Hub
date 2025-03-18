@@ -30,5 +30,9 @@ jobs:
       - name: Executar script de atualização de preços
         env:
          DATABASE_PUBLIC_URL: ${{ secrets.DATABASE_PUBLIC_URL }}
+         ACCOUNT_SID: ${{ secrets.ACCOUNT_SID }}
+         AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+         CATALOG_ID: ${{ secrets.CATALOG_ID }}
         run: python ATUALIZAR_PRECOS.py
+
 
