@@ -1,0 +1,25 @@
+name: Atualizar Preços
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"  # Executa a cada 2 horas
+  workflow_dispatch:  # Permite rodar manualmente pelo GitHub Actions
+
+jobs:
+  update_prices:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar o repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+
+      - name: Instalar dependências
+        run: |
+          pip install -r requirements.txt  # Caso tenha um arquivo de dependências
+
+      - name: Executar script de atualização de preços
+        run: python ATUALIZAR_PRECOS.py
