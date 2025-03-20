@@ -178,85 +178,55 @@ def increase_popularity(game_id):
 
 
 def get_game_by_id(game_id):
-    conn = get_read_connection()  # Usa conexão do pool de leitura
+    conn = get_read_connection()
     if not conn:
-        print("Erro: Não foi possível conectar ao banco de dados.")
         return None
 
     try:
-        cursor = conn.cursor()
-        
-        # Consulta principal para obter os dados do jogo
-        query = """
-        SELECT id, name, description, genres, release_date, image, images, green_man_nome, popularity, tumb
-        FROM games
-        WHERE id = %s
-        """
+        with conn.cursor() as cursor:
+            query = """
+            SELECT id, name, description, genres, release_date, image, images, green_man_nome, popularity, tumb
+            FROM games
+            WHERE id = %s
+            """
+            cursor.execute(query, (game_id,))
+            game = cursor.fetchone()
+            
+            if not game:
+                return None
 
-        cursor.execute(query, (game_id,))
-        game = cursor.fetchone()
+            new_popularity = increase_popularity(game_id)
 
-        if not game:
-            print("Jogo não encontrado.")
-            return None
-
-        # Aumenta a popularidade e obtém o novo valor
-        new_popularity = increase_popularity(game_id)
-
-        # Ajuste para o campo 'images'
-        images = game[6]
-        if isinstance(images, str) and images.strip():
-            try:
-                images = json.loads(images)
-            except json.JSONDecodeError:
-                print("Erro ao decodificar JSON de 'images'. Definindo como lista vazia.")
-                images = []
-        elif not images:
+            # ✅ Ajuste para garantir que images sempre seja uma lista
             images = []
+            if game[6]:  # Se images não for None
+                if isinstance(game[6], str) and game[6].strip():
+                    try:
+                        images = json.loads(game[6])
+                        if not isinstance(images, list):  # Garante que seja uma lista
+                            images = []
+                    except json.JSONDecodeError:
+                        print(f"Erro ao decodificar JSON de 'images' para o jogo {game[1]}. Definindo como lista vazia.")
+                        images = []
 
-        # Consulta os preços e URLs das lojas associadas ao jogo
-        query_prices = """
-        SELECT store_name, price, url FROM game_prices WHERE game_id = %s
-        """
-        cursor.execute(query_prices, (game_id,))
-        prices_data = cursor.fetchall()
+            query_prices = "SELECT store_name, price, url FROM game_prices WHERE game_id = %s"
+            cursor.execute(query_prices, (game_id,))
+            store_links = [{"store": store, "price": price, "url": url} for store, price, url in cursor.fetchall() if price and url]
 
-        # Filtra apenas lojas que têm preço válido (> 0) e URL não vazia
-        store_links = [
-            {"store": store, "price": price, "url": url}
-            for store, price, url in prices_data
-            if price is not None and price > 0 and url and url.strip()
-        ]
+            store_links.sort(key=lambda x: x["price"])
 
-        # Ordena os links pelo menor preço primeiro
-        store_links.sort(key=lambda x: x["price"])
-
-        game_data = {
-       "id": game[0],
-       "name": game[1],
-       "description": game[2],
-       "genres": game[3],
-       "release_date": str(game[4]),
-       "image": game[5],
-       "images": images,
-       "green_man_nome": game[7],
-       "popularity": new_popularity if new_popularity is not None else game[8],
-       "tumb": game[9],  # Novo campo adicionado
-       "links": store_links
-}
-
-
-        return game_data
+            return {
+                "id": game[0], "name": game[1], "description": game[2], "genres": game[3],
+                "release_date": str(game[4]), "image": game[5], "images": images,
+                "green_man_nome": game[7], "popularity": new_popularity or game[8],
+                "tumb": game[9], "links": store_links
+            }
 
     except Exception as e:
-        print(f"Erro")
+        print(f"Erro ao buscar jogo: {e}")
         return None
-
     finally:
-        cursor.close()
-        release_connection(conn)  # Devolve conexão ao pool
-
-
+        release_connection(conn)
 
 
 
