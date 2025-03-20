@@ -143,42 +143,33 @@ def get_games_from_db():
 
 
 def increase_popularity(game_id):
-    print(f"Aumentando popularidade do jogo ID {game_id}")  # TESTE
-
     conn = get_write_connection()
     if not conn:
-        print("Erro: Não foi possível conectar ao banco de dados.")
         return None
 
     try:
-        cursor = conn.cursor()
-        query = """
-        UPDATE games
-        SET popularity = popularity + 1
-        WHERE id = %s
-        RETURNING popularity;
-        """
-        
-        cursor.execute(query, (game_id,))
-        new_popularity = cursor.fetchone()
-
-        if new_popularity:
-            conn.commit()  # 🔹 Confirma a transação apenas se tudo der certo
-            print(f"Nova popularidade: {new_popularity[0]}")  # TESTE
-            return new_popularity[0]
-        else:
-            print(f"Erro")
-            conn.rollback()  # 🔹 Desfaz alterações caso o jogo não seja encontrado
-            return None
-
+        with conn.cursor() as cursor:
+            cursor.execute("""
+                UPDATE games
+                SET popularity = popularity + 1
+                WHERE id = %s
+                RETURNING popularity;
+            """, (game_id,))
+            
+            new_popularity = cursor.fetchone()
+            if new_popularity:
+                conn.commit()
+                return new_popularity[0]
+            else:
+                conn.rollback()
+                return None
     except Exception as e:
-        conn.rollback()  # 🔹 Evita que a conexão fique travada
+        conn.rollback()
         print(f"Erro ao aumentar a popularidade: {e}")
         return None
-
     finally:
-        cursor.close()
-        release_connection(conn)  # Devolve conexão ao pool
+        release_connection(conn)
+
 
 
 
