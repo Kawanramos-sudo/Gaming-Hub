@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, abort, session, jsonify
-import os
 import psycopg2
 from flask_caching import Cache
 from database import get_write_connection, release_connection, get_read_connection
@@ -13,10 +12,6 @@ from psycopg2.extras import DictCursor
 from psycopg2 import sql
 from markupsafe import escape
 from flask_talisman import Talisman
-import os
-
-
-from flask import Flask
 import os
 
 app = Flask(__name__, template_folder=os.path.abspath('.'))
@@ -274,14 +269,15 @@ def get_game_by_id(game_id):
 
 
 
+@cache.cached(timeout=600, key_prefix="cheapest_games")
 def get_cheapest_games():
-    conn = get_read_connection()  # Usa conexão do pool de leitura
+    conn = get_read_connection()
     if not conn:
         return []
-
+    
     try:
-        with conn.cursor() as cursor:  # ✅ Agora o cursor fecha corretamente
-            query = """
+        with conn.cursor() as cursor:
+            cursor.execute("""
                 SELECT g.id, g.name, g.image, MIN(p.price) AS lowest_price
                 FROM games g
                 JOIN game_prices p ON g.id = p.game_id
@@ -289,15 +285,14 @@ def get_cheapest_games():
                 GROUP BY g.id, g.name, g.image
                 ORDER BY lowest_price ASC
                 LIMIT 15;
-            """
-            cursor.execute(query)
-            cheapest_games = cursor.fetchall()
-        return cheapest_games
+            """)
+            return cursor.fetchall()
     except Exception as e:
         print(f"Erro ao buscar os jogos mais baratos: {e}")
         return []
     finally:
-        release_connection(conn)  # Devolve conexão ao pool
+        release_connection(conn)
+
 
 
 # Função para calcular o menor preço
