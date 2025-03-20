@@ -96,10 +96,10 @@
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
                 {% for game in popular_games %}
-                    <div class="swiper-slide">
-                        <div class="game">
-                            <a href="/jogo/{{ game['id'] }}"> <!-- Adiciona o link para a página do jogo -->
-                            <img src="{{ game['image'] }}" class="card-img-top" alt="{{ game['name'] }}" loading="lazy">
+                <div class="swiper-slide">
+                    <div class="game">
+                        <a href="/jogo/{{ game['id'] }}">
+                            <img data-src="{{ game['image'] }}" class="card-img-top lazy" alt="{{ game['name'] }}" loading="lazy">
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ game['name'] }}</h5>
                                 {% if game['lowest_price'] %}
@@ -109,33 +109,74 @@
                                 {% endif %}
                             </div>
                         </a>
-                        </div>
+                    </div>
                         <script>
-                            document.addEventListener("DOMContentLoaded", function() {
-                                var lazyImages = [].slice.call(document.querySelectorAll("img[data-src]"));
-                            
-                                if ("IntersectionObserver" in window) {
-                                    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
-                                        entries.forEach(function(entry) {
-                                            if (entry.isIntersecting) {
-                                                let lazyImage = entry.target;
-                                                lazyImage.src = lazyImage.dataset.src;
-                                                lazyImage.classList.remove("lazy");
-                                                lazyImageObserver.unobserve(lazyImage);
-                                            }
-                                        });
-                                    });
-                            
-                                    lazyImages.forEach(function(lazyImage) {
-                                        lazyImageObserver.observe(lazyImage);
-                                    });
-                                } else {
-                                    // Fallback para navegadores que não suportam IntersectionObserver
-                                    lazyImages.forEach(function(lazyImage) {
-                                        lazyImage.src = lazyImage.dataset.src;
-                                    });
-                                }
-                            });
+                            document.addEventListener("DOMContentLoaded", function () {
+    // Seleciona todas as imagens com o atributo data-src
+    var lazyImages = [].slice.call(document.querySelectorAll("img[data-src]"));
+
+    // Função para carregar uma imagem
+    function loadImage(image) {
+        if (image.dataset.src) {
+            image.src = image.dataset.src; // Carrega a imagem
+            image.classList.remove("lazy"); // Remove a classe lazy (opcional)
+        }
+    }
+
+    // Verifica se o navegador suporta IntersectionObserver
+    if ("IntersectionObserver" in window) {
+        var lazyImageObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    var lazyImage = entry.target;
+                    loadImage(lazyImage); // Carrega a imagem quando ela se torna visível
+                    lazyImageObserver.unobserve(lazyImage); // Para de observar a imagem
+                }
+            });
+        });
+
+        // Observa cada imagem
+        lazyImages.forEach(function (lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+        });
+    } else {
+        // Fallback para navegadores que não suportam IntersectionObserver
+        lazyImages.forEach(function (lazyImage) {
+            loadImage(lazyImage); // Carrega todas as imagens imediatamente
+        });
+    }
+
+    // Inicializa o Swiper e carrega as imagens ao navegar
+    const swiper = new Swiper('.mySwiper', {
+        navigation: {
+            nextEl: '#next-button',
+            prevEl: '#prev-button',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+        },
+        on: {
+            slideChange: function () {
+                // Carrega a imagem do slide ativo
+                const activeSlide = this.slides[this.activeIndex];
+                const lazyImage = activeSlide.querySelector('img[data-src]');
+                if (lazyImage && !lazyImage.src) {
+                    loadImage(lazyImage); // Carrega a imagem se ainda não foi carregada
+                }
+            },
+            init: function () {
+                // Carrega as imagens dos slides visíveis inicialmente
+                const initialSlides = [this.slides[this.activeIndex]];
+                initialSlides.forEach(slide => {
+                    const lazyImage = slide.querySelector('img[data-src]');
+                    if (lazyImage && !lazyImage.src) {
+                        loadImage(lazyImage); // Carrega a imagem se ainda não foi carregada
+                    }
+                });
+            },
+        },
+    });
+});
                             </script>
                     </div>
                 {% endfor %}

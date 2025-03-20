@@ -108,7 +108,7 @@
             <div class="carousel-container">
                 <div class="carousel">
                     {% for img in jogo.images %}
-                        <img src="{{ img }}" alt="Imagem adicional do jogo">
+                    <img src="{{ img }}" alt="Imagem adicional do jogo" loading="lazy">
                     {% else %}
                         <p>Não há imagens para exibir.</p>
                     {% endfor %}
