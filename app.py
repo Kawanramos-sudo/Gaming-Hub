@@ -23,7 +23,16 @@ cache = Cache(app)
 
 @cache.cached(timeout=300, key_prefix="all_games")
 def get_cached_games():
-    return get_games_from_db()
+    games = get_games_from_db()
+    for game in games:
+        # Ordena os links pelo preço
+        game["links"] = sorted(
+            game["links"], 
+            key=lambda x: x["price"] if x["price"] is not None else float('inf')
+        )
+        # Atribui o menor preço ao jogo
+        game["lowest_price"] = get_lowest_price(game)
+    return games
 
 
 
@@ -516,7 +525,18 @@ def increase_popularity_route(game_id):
 
 
 
+@app.route('/featured-game/<int:game_id>')
+def featured_game(game_id):
+    # Tenta buscar o jogo no cache primeiro
+    all_games = get_cached_games()
+    featured_game = next((game for game in all_games if game['id'] == game_id), None)
 
+    # Se não encontrar no cache, busca no banco
+
+    if featured_game:
+        return jsonify(featured_game)
+    else:
+        return jsonify({"error": "Jogo não encontrado"}), 404
 
 
 
@@ -542,10 +562,14 @@ def home():
         key=lambda g: g["lowest_price"]
     )[:15]
 
+        # Jogo em destaque (ID fixo 58)
+    featured_game = next((game for game in all_games if game['id'] == 58), None)
+
     genres = get_genres_from_db()  # ✅ Ainda precisa consultar o banco para os gêneros
 
     return render_template(
         'index.html',
+        featured_game=featured_game,  # Jogo em destaque
         games=paginated_games,
         popular_games=popular_games,
         cheapest_games=cheapest_games,

@@ -1,3 +1,182 @@
+.featured-game-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.game-link-wrapper {
+    display: block; /* Alterado para block */
+    width: 100%;
+    max-width: 1600px; /* Largura máxima desejada */
+    margin: 0 auto; /* Centralização horizontal */
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+
+
+/* Garantir que todo o conteúdo interno respeite os limites */
+.game-link-wrapper * {
+    box-sizing: border-box;
+}
+
+/* Correção para pseudo-elementos */
+.game-link-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none; /* Permite clicar através do overlay */
+    border-radius: 15px;  /* Igual ao container */
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.1); /* Borda visual opcional */
+}
+
+
+.game-highlight {
+    max-width: 1600px;
+    height: 780px;
+    margin: 0;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+    background: #1a1a1a;
+    display: flex; /* Novo */
+    flex-direction: column; /* Novo */
+}
+
+.game-highlight:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.image-container {
+    position: relative;
+    flex: 3; /* Novo - ocupa 75% da altura */
+    min-height: 0; /* Fix para flex children */
+    background: linear-gradient(45deg, #2c3e50, #3498db);
+
+}
+
+
+
+.game-image-3 {
+    width: 100%;
+    height: 768px;
+    object-fit: cover;
+    object-position: center top;
+    position: relative;
+    top: -16%; /* Controla a quantidade do movimento */
+    opacity: 0.9;
+    mix-blend-mode: luminosity;
+}
+
+.price-badge {
+    position: absolute;
+    bottom: 20px; /* Ajustado */
+    right: 20px; /* Ajustado */
+    background: #c0392b; /* Vermelho que chama atenção */
+    padding: 15px 25px; /* Reduzido */
+    border-radius: 10px;
+    transform: rotate(3deg);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+    animation: pulse 2s infinite;
+}
+
+.price {
+    font-size: 2.5rem; /* Reduzido */
+
+    font-weight: 900;
+    color: white;
+    font-family: 'Arial Black', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    display: block;
+}
+
+.discount {
+    background: #f1c40f; /* Amarelo ouro da persuasão */
+    color: #2c3e50;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 1.2rem;
+}
+
+.trust-badges {
+    position: absolute;
+    top: 20px; /* Ajustado */
+    left: 20px; /* Ajustado */
+    display: flex;
+    gap: 15px;
+}
+
+.trust-item {
+    background: rgba(255,255,255,0.9);
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+}
+
+.icon-3 {
+    margin-right: 8px;
+}
+
+.game-info {
+    flex: 2; /* Altera a proporção (quanto maior o número, mais espaço ocupa) */
+    max-height: 120px; /* Altura máxima para telas grandes */
+    padding: 15px 30px 20px 30px; /* topo, direita, baixo, esquerda */
+    background: linear-gradient(45deg, #2c3e50, #34495e);
+    display: flex; /* Novo */
+    flex-direction: column; /* Novo */
+    justify-content: center; /* Novo */
+}
+
+.game-title {
+    margin-top: 0;
+    color: #ecf0f1;
+    font-size: 2rem; /* Reduzido */
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.social-proof {
+    display: flex;
+    gap: 20px; /* Reduzido */
+    color: #bdc3c7;
+    font-size: 1rem; /* Reduzido */
+}
+@keyframes pulse {
+    0% { transform: rotate(3deg) scale(1); }
+    50% { transform: rotate(3deg) scale(1.03); } /* Mais sutil */
+    100% { transform: rotate(3deg) scale(1); }
+}
+
+/* Efeito de autoridade (Lei 5 - Reputação) */
+.game-highlight::before {
+    content: "EM ALTA";
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #e74c3c;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    z-index: 2;
+    box-shadow: 0 5px 15px rgba(231,76,60,0.3);
+}
 
 form {
     display: flex;
