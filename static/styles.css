@@ -1307,7 +1307,7 @@ border: 1px solid white; /* Adiciona uma borda branca */
 
     header input {
         padding: 5px 10px;
-        min-width: 10%;
+        min-width: 43%;
         max-width: 100%;
         font-size: 1.0rem;
         border: 1px solid #ccc;
