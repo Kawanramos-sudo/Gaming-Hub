@@ -1792,6 +1792,42 @@ border: 1px solid white; /* Adiciona uma borda branca */
         .telegram-float{
             display: none;
         }
+
+        .game-highlight {
+            max-width: 600px;
+        }
+
+
+
+        .game-link-wrapper {
+            display: block; /* Alterado para block */
+            width: 100%;
+            max-width: 450px; /* Largura máxima desejada */
+            margin: 0 auto; /* Centralização horizontal */
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+
+        .game-highlight {
+            max-width: 450px;
+            height: 780px;
+            margin: 0;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+            background: #1a1a1a;
+            display: flex; /* Novo */
+            flex-direction: column; /* Novo */
+        }
+
+
+        .trust-badges {
+            display: none;
+        }
+
 }
 
 @media (min-width: 1600px) {
@@ -1818,5 +1854,79 @@ border: 1px solid white; /* Adiciona uma borda branca */
   @media (max-width: 992px) { 
     header input {
         max-width: 20%; /* Permite que ocupe mais espaço */
+    }
+}
+
+@media (max-width: 377px) { 
+    .game-link-wrapper {
+        display: block; /* Alterado para block */
+        width: 100%;
+        max-width: 305px; /* Largura máxima desejada */
+        margin: 0 auto; /* Centralização horizontal */
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+
+
+    .game-highlight {
+        max-width: 305px;
+        height: 600px;
+        margin: 0;
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        transition: transform 0.3s ease;
+        background: #1a1a1a;
+        display: flex; /* Novo */
+        flex-direction: column; /* Novo */
+    }
+
+    .game-image-3 {
+        width: 100%;
+        height: 557px;
+        object-fit: cover;
+        object-position: center top;
+        position: relative;
+        top: -16%; /* Controla a quantidade do movimento */
+        opacity: 0.9;
+        mix-blend-mode: luminosity;
+    }
+
+    .price {
+        font-size: 1.8rem; /* Reduzido */
+    
+        font-weight: 900;
+        color: white;
+        font-family: 'Arial Black', sans-serif;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        display: block;
+    }
+    
+    .discount {
+        background: #f1c40f; /* Amarelo ouro da persuasão */
+        color: #2c3e50;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        font-size: 1.0rem;
+    }
+
+    .game-title {
+        font-size: 1.3rem; /* Reduzido */
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .social-proof {
+        display: flex;
+        gap: 20px; /* Reduzido */
+        color: #bdc3c7;
+        font-size: 0.73rem; /* Reduzido */
+        white-space: nowrap;
+        flex-wrap: nowrap;
     }
 }
