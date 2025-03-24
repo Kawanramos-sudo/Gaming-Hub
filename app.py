@@ -152,11 +152,13 @@ def get_games_from_db():
 
 
 def increase_popularity(game_id):
-    conn = get_write_connection()
-    if not conn:
-        return None
-
+    conn = None
     try:
+        conn = get_write_connection()
+        if not conn:
+            print("Erro: Não foi possível obter conexão de escrita")
+            return None
+
         with conn.cursor() as cursor:
             cursor.execute("""
                 UPDATE games
@@ -166,18 +168,26 @@ def increase_popularity(game_id):
             """, (game_id,))
             
             new_popularity = cursor.fetchone()
+            
             if new_popularity:
                 conn.commit()
                 return new_popularity[0]
-            else:
-                conn.rollback()
-                return None
+            
+            # Se não encontrou o jogo, faz rollback
+            conn.rollback()
+            return None
+            
     except Exception as e:
-        conn.rollback()
-        print(f"Erro ao aumentar a popularidade: {e}")
+        # Garante rollback em caso de erro
+        if conn:
+            conn.rollback()
+        print(f"Erro ao aumentar a popularidade do jogo {game_id}: {str(e)}")
         return None
+        
     finally:
-        release_connection(conn)
+        # Libera a conexão de volta ao pool correto
+        if conn:
+            release_connection(conn)  # Ou (conn) se for genérico
 
 
 
@@ -187,12 +197,14 @@ def increase_popularity(game_id):
 
 
 def get_game_by_id(game_id):
-    conn = get_read_connection()  # Usa conexão do pool de leitura
-    if not conn:
-        print("Erro: Não foi possível conectar ao banco de dados.")
-        return None
-
+    conn = None
+    cursor = None
     try:
+        conn = get_read_connection()  # Usa conexão do pool de leitura
+        if not conn:
+            print("Erro: Não foi possível conectar ao banco de dados.")
+            return None
+
         cursor = conn.cursor()
         
         # Consulta principal para obter os dados do jogo
@@ -201,7 +213,6 @@ def get_game_by_id(game_id):
         FROM games
         WHERE id = %s
         """
-
         cursor.execute(query, (game_id,))
         game = cursor.fetchone()
 
@@ -210,9 +221,9 @@ def get_game_by_id(game_id):
             return None
 
         # Aumenta a popularidade e obtém o novo valor
-        new_popularity = increase_popularity(game_id)
+        new_popularity = increase_popularity(game_id)  # Verifique se esta função gerencia conexões corretamente
 
-        # Ajuste para o campo 'images'
+        # Processamento dos dados...
         images = game[6]
         if isinstance(images, str) and images.strip():
             try:
@@ -223,47 +234,45 @@ def get_game_by_id(game_id):
         elif not images:
             images = []
 
-        # Consulta os preços e URLs das lojas associadas ao jogo
+        # Consulta os preços
         query_prices = """
         SELECT store_name, price, url FROM game_prices WHERE game_id = %s
         """
         cursor.execute(query_prices, (game_id,))
         prices_data = cursor.fetchall()
 
-        # Filtra apenas lojas que têm preço válido (> 0) e URL não vazia
         store_links = [
             {"store": store, "price": price, "url": url}
             for store, price, url in prices_data
             if price is not None and price > 0 and url and url.strip()
         ]
-
-        # Ordena os links pelo menor preço primeiro
         store_links.sort(key=lambda x: x["price"])
 
-        game_data = {
-       "id": game[0],
-       "name": game[1],
-       "description": game[2],
-       "genres": game[3],
-       "release_date": str(game[4]),
-       "image": game[5],
-       "images": images,
-       "green_man_nome": game[7],
-       "popularity": new_popularity if new_popularity is not None else game[8],
-       "tumb": game[9],  # Novo campo adicionado
-       "links": store_links
-}
-
-
-        return game_data
+        return {
+            "id": game[0],
+            "name": game[1],
+            "description": game[2],
+            "genres": game[3],
+            "release_date": str(game[4]),
+            "image": game[5],
+            "images": images,
+            "green_man_nome": game[7],
+            "popularity": new_popularity if new_popularity is not None else game[8],
+            "tumb": game[9],
+            "links": store_links
+        }
 
     except Exception as e:
-        print(f"Erro")
+        print(f"Erro ao buscar jogo: {str(e)}")
         return None
 
     finally:
-        cursor.close()
-        release_connection(conn)  # Devolve conexão ao pool
+        if cursor:
+            cursor.close()
+        if conn:
+            # Use a mesma função que foi usada para obter a conexão
+            # Se usou get_read_connection(), provavelmente deve usar put_read_connection()
+            release_connection(conn) 
 
 
 
