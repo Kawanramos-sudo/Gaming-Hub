@@ -1857,7 +1857,7 @@ border: 1px solid white; /* Adiciona uma borda branca */
     }
 }
 
-@media (max-width: 377px) { 
+@media (max-width: 451px) { 
     .game-link-wrapper {
         display: block; /* Alterado para block */
         width: 100%;
