@@ -566,10 +566,7 @@ def home():
     popular_games = sorted(all_games, key=lambda g: g["popularity"], reverse=True)[:15]
 
     # Buscar os 15 jogos mais baratos (com preço válido)
-    cheapest_games = sorted(
-        [g for g in all_games if g["lowest_price"] is not None], 
-        key=lambda g: g["lowest_price"]
-    )[:15]
+    cheapest_games = get_cheapest_games()  # ✅ Já retorna a lista correta direto do banco
 
         # Jogo em destaque (ID fixo 58)
     featured_game = next((game for game in all_games if game['id'] == 58), None)
