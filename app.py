@@ -296,12 +296,21 @@ def get_cheapest_games():
                 ORDER BY lowest_price ASC
                 LIMIT 15;
             """)
-            return cursor.fetchall()
+            return [
+                {
+                    "id": row[0],
+                    "name": row[1],
+                    "image": row[2],
+                    "lowest_price": row[3]
+                }
+                for row in cursor.fetchall()
+            ]
     except Exception as e:
         print(f"Erro ao buscar os jogos mais baratos: {e}")
         return []
     finally:
         release_connection(conn)
+
 
 
 
