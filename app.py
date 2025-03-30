@@ -16,7 +16,35 @@ import os
 
 app = Flask(__name__, template_folder=os.path.abspath('.'))
 
+TIKTOK_API_URL = "https://business-api.tiktok.com/open_api/v1.3/event/track/"
+TIKTOK_ACCESS_TOKEN = os.getenv("TIKTOK_ACCESS_TOKEN")
 
+@app.route('/track-tiktok-event', methods=['POST'])
+def track_event():
+    data = request.json
+    
+    payload = {
+        "event": data["event"],
+        "event_id": data["event_id"],
+        "context": {
+            "page": {
+                "url": data["url"]
+            },
+            "user": {
+                "external_id": "user_id_if_available"  # Substitua pelo ID do usuário se disponível
+            }
+        },
+        "timestamp": "2024-01-01T00:00:00+00:00"  # Substitua pelo timestamp real
+    }
+    
+    headers = {
+        "Access-Token": TIKTOK_ACCESS_TOKEN,
+        "Content-Type": "application/json"
+    }
+    
+    response = requests.post(TIKTOK_API_URL, json=payload, headers=headers)
+    
+    return jsonify({"status": "success"}), 200
 
 app.config['CACHE_TYPE'] = 'simple'
 cache = Cache(app)
