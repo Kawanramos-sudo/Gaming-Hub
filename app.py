@@ -26,14 +26,14 @@ def track_event():
     data = request.json
     
     payload = {
-        "event": data["event"],
-        "event_id": data["event_id"],
+        "event": data["ClickButton"],
+        "event_id": data["https://www.pixelprice.com.br/"],
         "context": {
             "page": {
-                "url": data["url"]
+                "url": data["https://www.pixelprice.com.br/"]
             },
             "user": {
-                "external_id": data.get("user_id", "anonymous_" + str(uuid.uuid4()))
+                "7487562795370889232"
             }
         },
         "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S+00:00")
