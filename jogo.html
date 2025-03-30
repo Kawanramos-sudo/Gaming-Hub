@@ -200,24 +200,17 @@
 
                         <script>
                             document.querySelectorAll('.link-item').forEach(link => {
-                              link.addEventListener('click', function(e) {
-                                // Envia o evento para seu servidor (que então enviará para a API do TikTok)
-                                fetch('/track-tiktok-event', {
-                                  method: 'POST',
-                                  headers: {
-                                    'Content-Type': 'application/json',
-                                  },
-                                  body: JSON.stringify({
-                                    event: "ClickContent",
-                                    event_id: "unique_event_id_" + Date.now(),
-                                    url: this.href,
-                                    // Outros parâmetros necessários
-                                  })
-                                });
+                                link.addEventListener('click', function(e) {
+                                const data = {
+                                event: "ClickContent",
+                                event_id: "unique_event_id_" + Date.now(),
+                                url: this.href
+                                };
+                                 navigator.sendBeacon('/track-tiktok-event', JSON.stringify(data));
+                                 });
                                 
-                                // Continua com o comportamento normal do link
-                              });
-                            });
+                                  // Continua com o comportamento normal do link
+                                 });
                             </script>
 
 

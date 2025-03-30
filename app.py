@@ -13,6 +13,8 @@ from psycopg2 import sql
 from markupsafe import escape
 from flask_talisman import Talisman
 import os
+from datetime import datetime
+
 
 app = Flask(__name__, template_folder=os.path.abspath('.'))
 
@@ -31,10 +33,10 @@ def track_event():
                 "url": data["url"]
             },
             "user": {
-                "external_id": "user_id_if_available"  # Substitua pelo ID do usuário se disponível
+                "external_id": data.get("user_id", "anonymous_" + str(uuid.uuid4()))
             }
         },
-        "timestamp": "2024-01-01T00:00:00+00:00"  # Substitua pelo timestamp real
+        "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S+00:00")
     }
     
     headers = {
@@ -42,9 +44,12 @@ def track_event():
         "Content-Type": "application/json"
     }
     
-    response = requests.post(TIKTOK_API_URL, json=payload, headers=headers)
-    
-    return jsonify({"status": "success"}), 200
+    try:
+        response = requests.post(TIKTOK_API_URL, json=payload, headers=headers)
+        response.raise_for_status()
+        return jsonify({"status": "success"}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 app.config['CACHE_TYPE'] = 'simple'
 cache = Cache(app)
