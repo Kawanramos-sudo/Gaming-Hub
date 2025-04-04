@@ -19,6 +19,12 @@ from datetime import datetime
 app = Flask(__name__, template_folder=os.path.abspath('.'))
 
 
+cache = Cache(app, config={
+    'CACHE_TYPE': 'simple',  # Modo simples (em memória)
+    'CACHE_DEFAULT_TIMEOUT': 300  # 5 minutos
+})
+
+# Agora você pode usar @cache.cached
 @cache.cached(timeout=300, key_prefix="all_games")
 def get_cached_games():
     games = get_games_from_db()
@@ -31,8 +37,6 @@ def get_cached_games():
         # Atribui o menor preço ao jogo
         game["lowest_price"] = get_lowest_price(game)
     return games
-
-
 
 
 import re
