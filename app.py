@@ -18,38 +18,17 @@ from datetime import datetime
 
 app = Flask(__name__, template_folder=os.path.abspath('.'))
 
+@app.route('/track-tiktok-event', methods=['POST'])
+def track_event():
+    user_ip = request.remote_addr
+    
+user_agent = request.headers.get('User-Agent')  # Captura automaticamente
+
+
 TIKTOK_API_URL = "https://business-api.tiktok.com/open_api/v1.3/event/track/"
 TIKTOK_ACCESS_TOKEN = os.getenv("TIKTOK_ACCESS_TOKEN")
 
-@app.route('/track-tiktok-event', methods=['POST'])
-def track_event():
-    data = request.json
-    
-    payload = {
-        "event": data["ClickButton"],
-        "event_id": data["https://www.pixelprice.com.br/"],
-        "context": {
-            "page": {
-                "url": data["https://www.pixelprice.com.br/"]
-            },
-            "user": {
-                "7487562795370889232"
-            }
-        },
-        "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S+00:00")
-    }
-    
-    headers = {
-        "Access-Token": TIKTOK_ACCESS_TOKEN,
-        "Content-Type": "application/json"
-    }
-    
-    try:
-        response = requests.post(TIKTOK_API_URL, json=payload, headers=headers)
-        response.raise_for_status()
-        return jsonify({"status": "success"}), 200
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
+
 
 app.config['CACHE_TYPE'] = 'simple'
 cache = Cache(app)
@@ -611,7 +590,7 @@ def home():
     cheapest_games = get_cheapest_games()  # ✅ Já retorna a lista correta direto do banco
 
         # Jogo em destaque (ID fixo 58)
-    featured_game = next((game for game in all_games if game['id'] == 58), None)
+    featured_game = next((game for game in all_games if game['id'] == 70), None)
 
     genres = get_genres_from_db()  # ✅ Ainda precisa consultar o banco para os gêneros
 
