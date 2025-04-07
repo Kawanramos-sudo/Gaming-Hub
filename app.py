@@ -403,6 +403,7 @@ def genre(genre_name):
 
 
 def get_related_games(game_id):
+    coon = None
     try:
         conn = get_read_connection()  # Usa conexão do pool de leitura
         if not conn:
