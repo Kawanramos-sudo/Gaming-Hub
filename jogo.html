@@ -186,20 +186,6 @@
                         </div>
 
 
-                        <script>
-                            document.querySelectorAll('.link-item').forEach(link => {
-                                link.addEventListener('click', function(e) {
-                                const data = {
-                                event: "ClickContent",
-                                event_id: "unique_event_id_" + Date.now(),
-                                url: this.href
-                                };
-                                 navigator.sendBeacon('/track-tiktok-event', JSON.stringify(data));
-                                 });
-                                
-                                  // Continua com o comportamento normal do link
-                                 });
-                            </script>
 
 
                         
