@@ -292,7 +292,6 @@ def get_game_by_id(game_id):
 
 
 
-@cache.cached(timeout=600, key_prefix="cheapest_games")
 def get_cheapest_games():
     conn = get_read_connection()
     if not conn:
