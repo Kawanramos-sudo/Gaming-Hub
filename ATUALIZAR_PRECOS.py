@@ -167,29 +167,35 @@ class PriceUpdater:
             return None
         except Exception:
             return None
-
-    def get_instant_gaming_price(self, url: str) -> Optional[float]:
-        try:
-            if not url or url.lower() == 'na':
-                return None
-
-            response = self.session.get(url)
-            soup = BeautifulSoup(response.text, 'html.parser')
-
-            stock_status = soup.find('div', class_='nostock')
-            if stock_status and 'fora de stock' in stock_status.text.lower():
-                return 0
-
-            price_div = soup.find('div', class_='total')
-            if price_div:
-                raw_price = price_div.text.strip()
-                match = re.search(r"R\$\s?([\d,.]+)", raw_price)
-                if match:
-                    return float(match.group(1).replace(',', '.'))
-
+def get_instant_gaming_price(self, url: str) -> Optional[float]:
+    try:
+        if not url or url.lower() == 'na':
             return None
-        except Exception:
-            return None
+
+        response = self.session.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # Salvar HTML para depuração no GitHub Actions
+        with open("instant_gaming_debug.html", "w", encoding="utf-8") as f:
+            f.write(soup.prettify())
+
+        stock_status = soup.find('div', class_='nostock')
+        if stock_status and 'fora de stock' in stock_status.text.lower():
+            print(f"❌ Jogo fora de estoque na Instant Gaming: {url}")
+            return 0
+
+        price_div = soup.find('div', class_='total')
+        if price_div:
+            raw_price = price_div.text.strip()
+            match = re.search(r"R\$\s?([\d,.]+)", raw_price)
+            if match:
+                return float(match.group(1).replace(',', '.'))
+
+        print(f"⚠️ Nenhum preço encontrado na Instant Gaming para {url}")
+        return None
+    except Exception as e:
+        print(f"❌ Erro ao obter preço da Instant Gaming: {e}")
+        return None
 
 def update_game_price_in_db(cursor, game_id: int, store_name: str, price: float) -> None:
     try:
