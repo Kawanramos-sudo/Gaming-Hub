@@ -74,7 +74,6 @@ def get_genres_from_db():
 
     finally:
         if conn:  # Fecha conexão apenas se ela foi aberta
-            conn.close()
             release_connection(conn)  # Devolve conexão ao pool
 
 
