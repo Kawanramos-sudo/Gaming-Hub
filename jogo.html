@@ -111,11 +111,17 @@
 
             <div class="carousel-container">
                 <div class="carousel">
-                    {% for img in jogo.images %}
-                    <img src="{{ img }}" alt="Imagem adicional do jogo" loading="lazy">
-                    {% else %}
-                        <p>Não há imagens para exibir.</p>
-                    {% endfor %}
+                    <div class="game-carousel">
+                        {% if jogo.images %}
+                            {% for img in jogo.images %}
+                                <div class="carousel-item">
+                                    <img src="{{ img }}" alt="Imagem do jogo {{ jogo.name }}" loading="lazy">
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>Não há imagens adicionais disponíveis para este jogo.</p>
+                        {% endif %}
+                    </div>
                 </div>
                 <button class="carousel-button left">&#10094;</button>
                 <button class="carousel-button right">&#10095;</button>
