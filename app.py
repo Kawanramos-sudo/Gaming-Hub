@@ -217,12 +217,16 @@ def get_game_by_id(game_id):
                 return None
 
             # Processamento dos dados...
-            images = game[6]
+        # Ajuste para o campo 'images'
+        images = game[6]
+        if isinstance(images, str) and images.strip():
             try:
-                images = json.loads(images) if isinstance(images, str) and images.strip() else []
+                images = json.loads(images)
             except json.JSONDecodeError:
+                print("Erro ao decodificar JSON de 'images'. Definindo como lista vazia.")
                 images = []
-                app.logger.warning(f"Erro ao decodificar JSON de images para jogo {game_id}")
+        elif not images:
+            images = []
 
             # Consulta preços em uma única query com JOIN
             cursor.execute("""
