@@ -217,12 +217,30 @@ def get_game_by_id(game_id):
                 return None
 
             # Processamento dos dados...
-            images = game[6]
+        # Processamento robusto das imagens
+        raw_images = game[6]  # Campo images
+        image_list = []
+        
+        if raw_images:
             try:
-                images = json.loads(images) if isinstance(images, str) and images.strip() else []
-            except json.JSONDecodeError:
-                images = []
-                app.logger.warning(f"Erro ao decodificar JSON de images para jogo {game_id}")
+                # Caso 1: String JSON (ex: "[\"url1.jpg\", \"url2.jpg\"]")
+                if isinstance(raw_images, str) and raw_images.strip().startswith('['):
+                    image_list = json.loads(raw_images)
+                
+                # Caso 2: Array PostgreSQL (convertido para lista pelo psycopg2)
+                elif isinstance(raw_images, list):
+                    image_list = raw_images
+                
+                # Caso 3: String com URLs separadas por vírgula
+                elif isinstance(raw_images, str):
+                    image_list = [url.strip() for url in raw_images.split(',') if url.strip()]
+                
+                # Filtra apenas URLs válidas
+                image_list = [url for url in image_list if url.startswith(('http://', 'https://'))]
+                
+            except Exception as e:
+                print(f"Erro ao processar imagens do jogo {game_id}: {str(e)}")
+                image_list = []
 
             # Consulta preços em uma única query com JOIN
             cursor.execute("""
@@ -245,7 +263,7 @@ def get_game_by_id(game_id):
                 "genres": game[3],
                 "release_date": str(game[4]),
                 "image": game[5],
-                "images": images,
+                "images": image_list,
                 "green_man_nome": game[7],
                 "popularity": game[8],  # Removida a chamada para increase_popularity()
                 "tumb": game[9],
