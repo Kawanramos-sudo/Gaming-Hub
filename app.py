@@ -54,39 +54,26 @@ import re
 
 
 def get_genres_from_db():
-    conn = None  # Inicializa a variável para evitar UnboundLocalError
+    conn = None
     try:
-        conn = get_read_connection()  # Usa conexão do pool de leitura
+        conn = get_read_connection()
         if not conn:
-            print("Erro: Não foi possível conectar ao banco de dados.")
             return []
 
         with conn.cursor() as cursor:
-            query = "SELECT DISTINCT genres FROM games WHERE genres IS NOT NULL"
-            cursor.execute(query)
-            rows = cursor.fetchall()
-
-        if not rows:
-            print("Nenhum gênero encontrado no banco de dados.")
-            return []
-
-        genres = set()  # Usamos um set para garantir que os gêneros sejam únicos
-        for row in rows:
-            genre = row[0]
-            if genre:
-                # Separar múltiplos gêneros caso estejam concatenados por vírgula
-                genres.update([g.strip() for g in genre.split(',')])
-
-        return sorted(genres)  # Retorna uma lista ordenada de gêneros
+            cursor.execute("""
+                SELECT DISTINCT unnest(string_to_array(genres, ',')) as genre
+                FROM games 
+                WHERE genres IS NOT NULL
+            """)
+            return sorted({row[0].strip() for row in cursor.fetchall() if row[0]})
 
     except Exception as e:
-        print(f"Erro ao obter gêneros do banco: {e}")
+        app.logger.error(f"Erro ao obter gêneros: {e}")
         return []
-
     finally:
-        if conn:  # Fecha conexão apenas se ela foi aberta
-            conn.close()
-            release_connection(conn)  # Devolve conexão ao pool
+        if conn:
+            release_connection(conn)  # Remove o conn.close() redundante
 
 
 
@@ -211,81 +198,66 @@ def increase_popularity(game_id):
 
 def get_game_by_id(game_id):
     conn = None
-    cursor = None
     try:
-        conn = get_read_connection()  # Usa conexão do pool de leitura
+        conn = get_read_connection()
         if not conn:
-            print("Erro: Não foi possível conectar ao banco de dados.")
+            app.logger.error("Erro: Não foi possível obter conexão do pool")
             return None
 
-        cursor = conn.cursor()
-        
-        # Consulta principal para obter os dados do jogo
-        query = """
-        SELECT id, name, description, genres, release_date, image, images, green_man_nome, popularity, tumb
-        FROM games
-        WHERE id = %s
-        """
-        cursor.execute(query, (game_id,))
-        game = cursor.fetchone()
+        with conn.cursor() as cursor:
+            # Consulta principal
+            cursor.execute("""
+                SELECT id, name, description, genres, release_date, 
+                       image, images, green_man_nome, popularity, tumb
+                FROM games WHERE id = %s
+            """, (game_id,))
+            game = cursor.fetchone()
 
-        if not game:
-            print("Jogo não encontrado.")
-            return None
+            if not game:
+                return None
 
-        # Aumenta a popularidade e obtém o novo valor
-        new_popularity = increase_popularity(game_id)  # Verifique se esta função gerencia conexões corretamente
-
-        # Processamento dos dados...
-        images = game[6]
-        if isinstance(images, str) and images.strip():
+            # Processamento dos dados...
+            images = game[6]
             try:
-                images = json.loads(images)
+                images = json.loads(images) if isinstance(images, str) and images.strip() else []
             except json.JSONDecodeError:
-                print("Erro ao decodificar JSON de 'images'. Definindo como lista vazia.")
                 images = []
-        elif not images:
-            images = []
+                app.logger.warning(f"Erro ao decodificar JSON de images para jogo {game_id}")
 
-        # Consulta os preços
-        query_prices = """
-        SELECT store_name, price, url FROM game_prices WHERE game_id = %s
-        """
-        cursor.execute(query_prices, (game_id,))
-        prices_data = cursor.fetchall()
+            # Consulta preços em uma única query com JOIN
+            cursor.execute("""
+                SELECT store_name, price, url 
+                FROM game_prices 
+                WHERE game_id = %s AND price > 0 AND url IS NOT NULL
+                ORDER BY price
+            """, (game_id,))
+            
+            store_links = [{
+                "store": store,
+                "price": price,
+                "url": url
+            } for store, price, url in cursor.fetchall()]
 
-        store_links = [
-            {"store": store, "price": price, "url": url}
-            for store, price, url in prices_data
-            if price is not None and price > 0 and url and url.strip()
-        ]
-        store_links.sort(key=lambda x: x["price"])
-
-        return {
-            "id": game[0],
-            "name": game[1],
-            "description": game[2],
-            "genres": game[3],
-            "release_date": str(game[4]),
-            "image": game[5],
-            "images": images,
-            "green_man_nome": game[7],
-            "popularity": new_popularity if new_popularity is not None else game[8],
-            "tumb": game[9],
-            "links": store_links
-        }
+            return {
+                "id": game[0],
+                "name": game[1],
+                "description": game[2],
+                "genres": game[3],
+                "release_date": str(game[4]),
+                "image": game[5],
+                "images": images,
+                "green_man_nome": game[7],
+                "popularity": game[8],  # Removida a chamada para increase_popularity()
+                "tumb": game[9],
+                "links": store_links
+            }
 
     except Exception as e:
-        print(f"Erro ao buscar jogo: {str(e)}")
+        app.logger.error(f"Erro ao buscar jogo {game_id}: {str(e)}")
         return None
-
     finally:
-        if cursor:
-            cursor.close()
         if conn:
-            # Use a mesma função que foi usada para obter a conexão
-            # Se usou get_read_connection(), provavelmente deve usar put_read_connection()
-            release_connection(conn) 
+            release_connection(conn)  # Consistente com get_read_connection()
 
 
 
@@ -328,22 +300,21 @@ def get_cheapest_games():
 
 # Função para calcular o menor preço
 def get_lowest_price(game):
-    lowest_price = Decimal('Infinity')  # Valor inicial alto
-    lowest_price_str = None
-
-    if "links" in game:
-        for link in game["links"]:
-            price = link["price"]
-            if price is not None:
-                try:
-                    price_decimal = Decimal(price)  # Converte o preço para Decimal
-                    if price_decimal < lowest_price:
-                        lowest_price = price_decimal
-                        lowest_price_str = str(lowest_price)
-                except Exception as e:
-                    print(f"Erro ao converter o preço para Decimal: {e}")
-
-    return lowest_price_str
+    if not game.get("links"):
+        return None
+    
+    try:
+        # Filtra e converte preços válidos
+        valid_prices = [
+            Decimal(str(link["price"])) 
+            for link in game["links"] 
+            if link.get("price") is not None
+        ]
+        
+        return str(min(valid_prices)) if valid_prices else None
+    except Exception as e:
+        app.logger.error(f"Erro ao calcular menor preço: {e}")
+        return None
 
 
 
@@ -413,101 +384,50 @@ def genre(genre_name):
 
 
 def get_related_games(game_id):
-    coon = None
+    conn = None
     try:
-        conn = get_read_connection()  # Usa conexão do pool de leitura
+        conn = get_read_connection()
         if not conn:
-            print("Erro: Não foi possível conectar ao banco de dados.")
             return []
 
         with conn.cursor() as cursor:
-            # Buscar os gêneros do jogo atual
+            # Obtém gêneros do jogo atual
             cursor.execute("SELECT genres FROM games WHERE id = %s", (game_id,))
-            game_data = cursor.fetchone()
-            if not game_data:
-                print(f"Nenhum jogo encontrado com o ID {game_id}")
-                return []
-
-            game_genres = game_data[0] or ""
-            genre_list = [g.strip() for g in game_genres.split(',') if g.strip()]
-
-            # Se houver gêneros, construímos a query dinamicamente de forma segura
-            query_base = sql.SQL("""
-                SELECT g.id, g.name, g.description, g.genres, g.release_date, g.image, g.images,
-                       g.green_man_nome, g.popularity, gp.store_name, gp.price, gp.url
+            game_genres = (cursor.fetchone() or [None])[0] or ""
+            
+            # Query otimizada
+            query = """
+                WITH game_genres AS (
+                    SELECT unnest(string_to_array(%s, ',')) as genre
+                )
+                SELECT DISTINCT g.id, g.name, g.image,
+                       MIN(gp.price) FILTER (WHERE gp.price > 0) as lowest_price
                 FROM games g
                 LEFT JOIN game_prices gp ON g.id = gp.game_id
                 WHERE g.id != %s
-            """)
-
-            params = [game_id]
-
-            if genre_list:
-                genre_conditions = sql.SQL(" OR ").join(
-                    sql.SQL("g.genres ILIKE %s") for _ in genre_list
-                )
-                query_base += sql.SQL(" AND (") + genre_conditions + sql.SQL(")")
-                params.extend([f"%{genre}%" for genre in genre_list])
-
-            query_base += sql.SQL(" ORDER BY g.popularity DESC")
-
-            # Executa a query com os parâmetros
-            cursor.execute(query_base, params)
-            rows = cursor.fetchall()
-
-            related_games = {}
-            for row in rows:
-                (related_id, name, description, genres, release_date, image, images, 
-                 green_man_nome, popularity, store_name, price, url) = row
-
-                name = name or "Nome não disponível"
-                description = description or "Descrição não disponível"
-                release_date = release_date or "Data não disponível"
-                image_url = image or ""
-
-                images_list = []
-                if images:
-                    try:
-                        images_list = json.loads(images) if isinstance(images, str) else images
-                    except json.JSONDecodeError:
-                        print(f"Erro ao decodificar 'images' para o jogo {related_id}")
-
-                if related_id not in related_games:
-                    related_games[related_id] = {
-                        "id": related_id,
-                        "name": name,
-                        "description": description,
-                        "genres": genres,
-                        "release_date": release_date,
-                        "image": image_url,
-                        "images": images_list,
-                        "green_man_nome": green_man_nome,
-                        "popularity": popularity,
-                        "links": [],
-                        "lowest_price": None
-                    }
-
-                if store_name and url and is_valid_url(url) and price and price > 0:
-                    related_games[related_id]["links"].append({
-                        "store": store_name,
-                        "price": price,
-                        "url": url
-                    })
-
-            for game in related_games.values():
-                valid_prices = [link["price"] for link in game["links"] if link["price"] > 0]
-                game["lowest_price"] = min(valid_prices) if valid_prices else None
-
-            print(f"Jogos relacionados retornados: {len(related_games)}")
-            return list(related_games.values())
+                  AND EXISTS (
+                      SELECT 1 FROM game_genres gg 
+                      WHERE g.genres LIKE '%%' || gg.genre || '%%'
+                  )
+                GROUP BY g.id, g.name, g.image
+                ORDER BY g.popularity DESC
+                LIMIT 10
+            """
+            
+            cursor.execute(query, (game_genres, game_id))
+            return [{
+                "id": row[0],
+                "name": row[1],
+                "image": row[2],
+                "lowest_price": str(row[3]) if row[3] else None
+            } for row in cursor.fetchall()]
 
     except Exception as e:
-        print(f"Erro ao buscar jogos relacionados: {e}")
+        app.logger.error(f"Erro ao buscar relacionados para {game_id}: {e}")
         return []
-
     finally:
         if conn:
-            release_connection(conn)  # Devolve conexão ao pool
+            release_connection(conn)
 
 
 
