@@ -410,12 +410,12 @@ def get_related_games(game_id):
             cursor.execute("SELECT genres FROM games WHERE id = %s", (game_id,))
             game_genres = (cursor.fetchone() or [None])[0] or ""
             
-            # Query otimizada
+            # Query otimizada e corrigida
             query = """
                 WITH game_genres AS (
                     SELECT unnest(string_to_array(%s, ',')) as genre
                 )
-                SELECT DISTINCT g.id, g.name, g.image,
+                SELECT DISTINCT g.id, g.name, g.image, g.popularity,
                        MIN(gp.price) FILTER (WHERE gp.price > 0) as lowest_price
                 FROM games g
                 LEFT JOIN game_prices gp ON g.id = gp.game_id
@@ -424,7 +424,7 @@ def get_related_games(game_id):
                       SELECT 1 FROM game_genres gg 
                       WHERE g.genres LIKE '%%' || gg.genre || '%%'
                   )
-                GROUP BY g.id, g.name, g.image
+                GROUP BY g.id, g.name, g.image, g.popularity
                 ORDER BY g.popularity DESC
                 LIMIT 10
             """
@@ -434,7 +434,7 @@ def get_related_games(game_id):
                 "id": row[0],
                 "name": row[1],
                 "image": row[2],
-                "lowest_price": str(row[3]) if row[3] else None
+                "lowest_price": str(row[4]) if row[4] else None  # Note que o índice mudou para 4
             } for row in cursor.fetchall()]
 
     except Exception as e:
@@ -443,7 +443,6 @@ def get_related_games(game_id):
     finally:
         if conn:
             release_connection(conn)
-
 
 
 
