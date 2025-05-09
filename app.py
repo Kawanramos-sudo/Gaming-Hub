@@ -112,6 +112,8 @@ def get_games_from_db():
                 game_prices gp 
             ON 
                 g.id = gp.game_id
+            ORDER BY 
+                g.id DESC
             """
             cursor.execute(query)
             rows = cursor.fetchall()
