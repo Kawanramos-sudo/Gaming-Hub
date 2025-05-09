@@ -18,25 +18,36 @@ from datetime import datetime
 
 app = Flask(__name__, template_folder=os.path.abspath('.'))
 
+import time
 
-cache = Cache(app, config={
-    'CACHE_TYPE': 'simple',  # Modo simples (em memória)
-    'CACHE_DEFAULT_TIMEOUT': 300  # 5 minutos
-})
+_cached_games = {
+    "data": [],
+    "last_updated": 0
+}
 
-# Agora você pode usar @cache.cached
-@cache.cached(timeout=300, key_prefix="all_games")
+CACHE_DURATION = 300  # 5 minutos
+
 def get_cached_games():
-    games = get_games_from_db()
-    for game in games:
-        # Ordena os links pelo preço
+    now = time.time()
+
+    # Se o cache estiver válido, retorna ele
+    if now - _cached_games["last_updated"] < CACHE_DURATION:
+        return _cached_games["data"]
+
+    # Se expirou, atualiza
+    fresh_games = get_games_from_db()
+    for game in fresh_games:
         game["links"] = sorted(
             game["links"], 
             key=lambda x: x["price"] if x["price"] is not None else float('inf')
         )
-        # Atribui o menor preço ao jogo
         game["lowest_price"] = get_lowest_price(game)
-    return games
+
+    # Atualiza o cache manual
+    _cached_games["data"] = fresh_games
+    _cached_games["last_updated"] = now
+
+    return fresh_games
 
 
 import re
@@ -280,7 +291,6 @@ def get_game_by_id(game_id):
 
 
 
-@cache.cached(timeout=600, key_prefix="cheapest_games")
 def get_cheapest_games():
     conn = get_read_connection()
     if not conn:
@@ -402,6 +412,7 @@ def genre(genre_name):
 
 
 def get_related_games(game_id):
+    coon = None
     try:
         conn = get_read_connection()  # Usa conexão do pool de leitura
         if not conn:
