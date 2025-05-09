@@ -1724,9 +1724,9 @@ border: 1px solid white; /* Adiciona uma borda branca */
         white-space: pre-line; /* Preserva as quebras de linha */
     
     }
-    video {
-        width: 95%;
-        height: auto;
+     iframe {
+        width: 410px;
+        height: 290px;
         display: block;
         margin: auto;
         border-radius: 15px;  /* Arredonda as bordas */
