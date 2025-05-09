@@ -30,25 +30,24 @@ CACHE_DURATION = 300  # 5 minutos
 def get_cached_games():
     now = time.time()
 
-    # Se o cache estiver válido, retorna ele
     if now - _cached_games["last_updated"] < CACHE_DURATION:
         return _cached_games["data"]
 
-    # Se expirou, atualiza
     fresh_games = get_games_from_db()
     for game in fresh_games:
         game["links"] = sorted(
-            game["links"], 
+            game["links"],
             key=lambda x: x["price"] if x["price"] is not None else float('inf')
         )
         game["lowest_price"] = get_lowest_price(game)
 
-    # Atualiza o cache manual
+    # ✅ Ordena por data de adição (mais recente primeiro)
+    fresh_games.sort(key=lambda g: g.get("added_at", datetime.min), reverse=True)
+
     _cached_games["data"] = fresh_games
     _cached_games["last_updated"] = now
 
     return fresh_games
-
 
 import re
 
@@ -92,7 +91,7 @@ def is_valid_url(url):
     return re.match(regex, url) is not None
 
 def get_games_from_db():
-    conn = None  # 🔹 Garante que a variável `conn` sempre exista
+    conn = None
 
     try:
         conn = get_read_connection()
@@ -104,7 +103,8 @@ def get_games_from_db():
             query = """
             SELECT 
                 g.id, g.name, g.description, g.genres, g.release_date, 
-                g.image, g.images, g.green_man_nome, g.popularity, 
+                g.image, g.images, g.green_man_nome, g.popularity,
+                g.added_at,  -- ✅ nova coluna
                 gp.store_name, gp.price, gp.url
             FROM 
                 games g
@@ -118,23 +118,31 @@ def get_games_from_db():
 
         games = {}
         for row in rows:
-            game_id, name, description, genres, release_date, image, images, green_man_nome, popularity, store_name, price, url = row
+            (
+                game_id, name, description, genres, release_date,
+                image, images, green_man_nome, popularity, added_at,
+                store_name, price, url
+            ) = row
 
             if game_id not in games:
                 games[game_id] = {
-                    "id": game_id, "name": name or "Nome não disponível",
+                    "id": game_id,
+                    "name": name or "Nome não disponível",
                     "description": description or "Descrição não disponível",
-                    "genres": genres, "release_date": release_date or "Data não disponível",
-                    "image": image or "", "images": json.loads(images) if isinstance(images, str) else [],
-                    "green_man_nome": green_man_nome, "popularity": popularity,
+                    "genres": genres,
+                    "release_date": release_date or "Data não disponível",
+                    "image": image or "",
+                    "images": json.loads(images) if isinstance(images, str) else [],
+                    "green_man_nome": green_man_nome,
+                    "popularity": popularity,
+                    "added_at": added_at,  # ✅ salva data de adição
                     "links": [],
-                    "lowest_price": None  # 🔹 Sempre adiciona a chave
+                    "lowest_price": None
                 }
 
             if store_name and url and price and price > 0:
                 games[game_id]["links"].append({"store": store_name, "price": price, "url": url})
 
-                # 🔹 Atualiza o menor preço
                 if games[game_id]["lowest_price"] is None or price < games[game_id]["lowest_price"]:
                     games[game_id]["lowest_price"] = price
 
@@ -143,9 +151,9 @@ def get_games_from_db():
     except Exception as e:
         print(f"Erro ao buscar jogos do banco: {e}")
         return []
-    
+
     finally:
-        if conn is not None:  # 🔹 Evita erro caso `conn` não tenha sido inicializada
+        if conn is not None:
             release_connection(conn)
 
 
