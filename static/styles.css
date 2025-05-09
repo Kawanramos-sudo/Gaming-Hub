@@ -825,8 +825,8 @@ a {
 
   }
   iframe {
-    width: 200px;
-    height: 100px;
+    width: 400px;
+    height: 250px;
     display: block;
     margin: auto;
     border-radius: 15px;  /* Arredonda as bordas */
