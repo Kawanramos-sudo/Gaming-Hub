@@ -510,7 +510,7 @@ def featured_game(game_id):
 @app.route('/')
 def home():
     page = request.args.get("page", 1, type=int)  # Página atual
-    per_page = 28  # Número de jogos por página
+    per_page = 70  # Número de jogos por página
     offset = (page - 1) * per_page  
 
     all_games = get_cached_games()  # ✅ Obtém os jogos do cache
