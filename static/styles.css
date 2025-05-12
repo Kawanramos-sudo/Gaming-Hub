@@ -1855,6 +1855,13 @@ border: 1px solid white; /* Adiciona uma borda branca */
     header input {
         max-width: 20%; /* Permite que ocupe mais espaço */
     }
+
+
+
+
+
+
+    
 }
 
 @media (max-width: 451px) { 
@@ -1929,4 +1936,31 @@ border: 1px solid white; /* Adiciona uma borda branca */
         white-space: nowrap;
         flex-wrap: nowrap;
     }
+
+
+
+
+    
+}
+
+
+@media (max-width: 1900px) {
+
+.featured-game-container {
+    margin-left: 61.45px;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    width: 92.25%;
+}
+
+.game-link-wrapper {
+    display: block; /* Alterado para block */
+    width: 92.25%;
+    max-width: 1600px; /* Largura máxima desejada */
+    margin: 0 auto; /* Centralização horizontal */
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
 }
