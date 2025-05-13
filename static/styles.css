@@ -1947,7 +1947,7 @@ border: 1px solid white; /* Adiciona uma borda branca */
 @media (max-width: 1900px) {
 
 .featured-game-container {
-    margin-left: 56.45px;
+    margin-left: 26.45px;
     display: flex;
     justify-content: center;
     padding: 20px 0;
