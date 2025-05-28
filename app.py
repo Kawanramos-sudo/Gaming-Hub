@@ -637,7 +637,9 @@ def about():
 @app.template_filter('format_currency')
 def format_currency(value):
     try:
+        # Se value for None, trata como 0.0
+        if value is None:
+            value = 0.0
         return f"R$ {float(value):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    except ValueError:
-        return value
-
+    except (ValueError, TypeError):
+        return "R$ 0,00"
