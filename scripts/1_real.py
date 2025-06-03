@@ -4,6 +4,8 @@ import discord
 import asyncio
 from database import connect
 
+import os
+
 TELEGRAM_BOT_TOKEN = os.environ['TELEGRAM_BOT_TOKEN']
 TELEGRAM_CHAT_ID = os.environ['TELEGRAM_CHAT_ID']
 DISCORD_TOKEN = os.environ['DISCORD_TOKEN']
