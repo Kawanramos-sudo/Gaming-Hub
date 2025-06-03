@@ -129,7 +129,18 @@ async def update_lowest_prices():
 @client.event
 async def on_ready():
     print(f'✅ Bot conectado como {client.user}')
-    await update_lowest_prices()
+    try:
+        await update_lowest_prices()
+        print("✅ Todas as promoções processadas!")
+    except Exception as e:
+        print(f"❌ Erro durante o processamento: {e}")
+    finally:
+        # Desconecta o bot após finalizar
+        await client.close()
+        print("✅ Bot desconectado com sucesso!")
 
 # Iniciar o bot do Discord
-client.run(DISCORD_TOKEN)
+try:
+    client.run(DISCORD_TOKEN)
+except Exception as e:
+    print(f"❌ Erro ao iniciar o bot: {e}")
