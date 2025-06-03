@@ -1,4 +1,4 @@
-name: Rodar Bot de Promoção
+name: Bot 1 real
 
 on:
   workflow_dispatch:  # Permite rodar manualmente
