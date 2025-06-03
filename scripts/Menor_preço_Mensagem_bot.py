@@ -59,6 +59,7 @@ async def send_discord_promotion(channel, game_name, price, store_name, store_ur
     print(f"✅ Promoção enviada para '{game_name}' no Discord!")
 
 async def update_lowest_prices():
+    print("⏳ Iniciando busca por promoções...")
     """Atualiza os menores preços e envia promoções para Telegram e Discord."""
     conn = connect()
     if not conn:
@@ -80,6 +81,7 @@ async def update_lowest_prices():
         current_prices = cursor.fetchall()
 
         for game_id, current_lowest_price in current_prices:
+            print(f"🔍 Verificando jogo ID: {game_id} | Preço atual: R${current_lowest_price:.2f}")
             query_lowest_history = "SELECT MIN(price) FROM game_price_history WHERE game_id = %s AND price > 0;"
             cursor.execute(query_lowest_history, (game_id,))
             lowest_price_recorded = cursor.fetchone()[0]
@@ -105,6 +107,7 @@ async def update_lowest_prices():
                     telegram_response = send_telegram_message(game_name, current_lowest_price, store_name, image_url, store_url)
                     
                     if telegram_response.get("ok"):  # Só registra no banco se a mensagem for enviada com sucesso
+                        print(f"✅ Telegram: Mensagem enviada para '{game_name}'")
                         # Enviar para o Discord
                         channel = client.get_channel(DISCORD_CHANNEL_ID)
                         if channel:
@@ -142,7 +145,18 @@ async def update_lowest_prices():
 @client.event
 async def on_ready():
     print(f'✅ Bot conectado como {client.user}')
-    await update_lowest_prices()
+    try:
+        await update_lowest_prices()
+        print("✅ Todas as promoções processadas!")
+    except Exception as e:
+        print(f"❌ Erro durante o processamento: {e}")
+    finally:
+        # Desconecta o bot após finalizar
+        await client.close()
+        print("✅ Bot desconectado com sucesso!")
 
 # Iniciar o bot do Discord
-client.run(DISCORD_TOKEN)
+try:
+    client.run(DISCORD_TOKEN)
+except Exception as e:
+    print(f"❌ Erro ao iniciar o bot: {e}")
