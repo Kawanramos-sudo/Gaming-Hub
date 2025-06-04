@@ -107,19 +107,26 @@ class PriceUpdater:
         try:
             if not url or url.lower() == 'na':
                 return None
-            
+
             response = self.session.get(url)
             soup = BeautifulSoup(response.text, 'html.parser')
-            
+
+            # Busca pela meta tag padrão do preço principal
+            meta_price = soup.find('meta', itemprop='price')
+            if meta_price and meta_price.get('content'):
+                return float(meta_price['content'])
+
+            # Fallback: método atual
             price_container = soup.find('span', class_='product-price--val')
             if price_container:
                 integer_part = price_container.find('span', class_='integer').text.strip()
                 decimal_part = price_container.find('span', class_='decimal').text.strip()
                 price = f"{integer_part}.{decimal_part}".replace('.,', '.')
                 return float(price)
-            
+
             return None
-        except Exception:
+        except Exception as e:
+            print(f"{Fore.RED}Erro ao obter preço da Nuuvem: {e}{Style.RESET_ALL}")
             return None
 
     def get_steam_price(self, game_id: int, url: str) -> Optional[float]:
