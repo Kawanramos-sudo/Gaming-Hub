@@ -527,7 +527,7 @@ def home():
     cheapest_games = get_cheapest_games()  # ✅ Já retorna a lista correta direto do banco
 
         # Jogo em destaque (ID fixo 58)
-    featured_game = next((game for game in all_games if game['id'] == 53), None)
+    featured_game = next((game for game in all_games if game['id'] == 112), None)
 
     genres = get_genres_from_db()  # ✅ Ainda precisa consultar o banco para os gêneros
 
