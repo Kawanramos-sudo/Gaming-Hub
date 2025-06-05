@@ -509,31 +509,27 @@ def featured_game(game_id):
 
 @app.route('/')
 def home():
-    page = request.args.get("page", 1, type=int)  # Página atual
-    per_page = 70  # Número de jogos por página
+    page = request.args.get("page", 1, type=int)
+    per_page = 70
     offset = (page - 1) * per_page  
 
-    all_games = get_cached_games()  # ✅ Obtém os jogos do cache
-    total_games = len(all_games)  # ✅ Calcula o total de jogos no cache
-    total_pages = (total_games + per_page - 1) // per_page  # 🔹 Arredondamento para cima
+    all_games = get_cached_games()
+    total_games = len(all_games)
+    total_pages = (total_games + per_page - 1) // per_page
 
-    # Paginação dos jogos
     paginated_games = all_games[offset : offset + per_page]
-
-    # Buscar os 15 jogos mais populares
     popular_games = sorted(all_games, key=lambda g: g["popularity"], reverse=True)[:15]
+    cheapest_games = get_cheapest_games()
 
-    # Buscar os 15 jogos mais baratos (com preço válido)
-    cheapest_games = get_cheapest_games()  # ✅ Já retorna a lista correta direto do banco
+    # Agora basta mudar esse ID aqui quando quiser
+    FEATURED_GAME_ID = 112
+    featured_game = next((game for game in all_games if game['id'] == FEATURED_GAME_ID), None)
 
-        # Jogo em destaque (ID fixo 58)
-    featured_game = next((game for game in all_games if game['id'] == 112), None)
-
-    genres = get_genres_from_db()  # ✅ Ainda precisa consultar o banco para os gêneros
+    genres = get_genres_from_db()
 
     return render_template(
         'index.html',
-        featured_game=featured_game,  # Jogo em destaque
+        featured_game=featured_game,
         games=paginated_games,
         popular_games=popular_games,
         cheapest_games=cheapest_games,

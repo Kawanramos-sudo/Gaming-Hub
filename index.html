@@ -93,14 +93,14 @@
 
 
 
-    <div class="featured-game-container"> <!-- Novo container pai -->
+<div class="featured-game-container">
 
-    <a href="/jogo/70" class="game-link-wrapper">
+    <a href="/jogo/{{ featured_game.id }}" class="game-link-wrapper">
         <div class="game-highlight">
             <div class="image-container">
-                <img src="https://i.ibb.co/SX0LQhYk/elden-ring-nightreign-HD-scaled.jpg" alt="Elden Ring Nightreign" class="game-image-3">
+                <img src="https://i.ibb.co/SX0LQhYk/elden-ring-nightreign-HD-scaled.jpg" alt="{{ featured_game.name }}" class="game-image-3">
                 <div class="price-badge">
-                    <span class="price">{{ featured_game.lowest_price|format_currency }}</span>
+                    <span class="price">{{ featured_game.lowest_price | format_currency }}</span>
                     <div class="discount">25% OFF</div>
                 </div>
                 <div class="trust-badges">
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <div class="game-info">
-                <h2 class="game-title">Elden Ring Nightreign</h2>
+                <h2 class="game-title">{{ featured_game.name }}</h2>
                 <div class="social-proof">
                     <span class="users">🎮 50K de jogadores</span>
                     <span class="rating">⭐ 4.5/5 (3.3k avaliações)</span>
@@ -117,6 +117,7 @@
         </div>
     </a>
 </div>
+
 
 
 
