@@ -3,7 +3,8 @@ name: Bot 1 real
 on:
   workflow_dispatch:  # Permite rodar manualmente
   schedule:
-    - cron: '0 */22 * * *'  # A cada 12 horas
+  - cron: '0 12 */2 * *'
+
 
 jobs:
   run-bot:
