@@ -100,7 +100,7 @@
             <div class="image-container">
                 <img src="https://i.ibb.co/NdbwX7cR/Hollow-1400x788.webp" alt="{{ featured_game.name }}" class="game-image-3">
                 <div class="price-badge">
-                    <span class="price">{{ featured_game.lowest_price | format_currency }}</span>
+                    <span class="price">  {{ featured_game.lowest_price | default(0.0) | format_currency }}</span>
                     <div class="discount">25% OFF</div>
                 </div>
                 <div class="trust-badges">
