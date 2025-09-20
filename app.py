@@ -522,7 +522,7 @@ def home():
     cheapest_games = get_cheapest_games()
 
     # Agora basta mudar esse ID aqui quando quiser
-    FEATURED_GAME_ID = 112
+    FEATURED_GAME_ID = 130
     featured_game = next((game for game in all_games if game['id'] == FEATURED_GAME_ID), None)
 
     genres = get_genres_from_db()
