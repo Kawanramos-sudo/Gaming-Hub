@@ -20,7 +20,6 @@ client = discord.Client(intents=discord_intents)
 def send_telegram_message(game_name, price, store_name, image_url, store_url):
     """Envia a promoção para o Telegram e trata erros com logs detalhados."""
     message = (
-        f"🔴 ATENÇÃO, CAÇADORES DE PROMOÇÕES! 🔴\n\n"
         f"💥 <b>{game_name}</b> está com um DESCONTO IMPERDÍVEL! 💥 \n\n"
         f"🔥 Preço Promocional: <b>R${price:.2f}</b> \n\n"
         f"<b>⚡ Válido por tempo LIMITADO!⏳</b>\n\n"
